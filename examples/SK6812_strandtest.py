@@ -9,19 +9,19 @@ from rpi_ws281x import Color, PixelStrip, ws
 
 
 # LED strip configuration:
-LED_COUNT = 40         # Number of LED pixels.
-LED_PIN = 18           # GPIO pin connected to the pixels (must support PWM!).
+LED_COUNT = 600        # Number of LED pixels.
+LED_PIN = 13           # GPIO pin connected to the pixels (must support PWM!).
 LED_FREQ_HZ = 800000   # LED signal frequency in hertz (usually 800khz)
 LED_DMA = 10           # DMA channel to use for generating signal (try 10)
-LED_BRIGHTNESS = 255   # Set to 0 for darkest and 255 for brightest
+LED_BRIGHTNESS = 50   # Set to 0 for darkest and 255 for brightest
 LED_INVERT = False     # True to invert the signal (when using NPN transistor level shift)
-LED_CHANNEL = 0
-LED_STRIP = ws.SK6812_STRIP_RGBW
+LED_CHANNEL = 1
+LED_STRIP = ws.SK6812_STRIP_GRBW
 # LED_STRIP = ws.SK6812W_STRIP
 
 
 # Define functions which animate LEDs in various ways.
-def colorWipe(strip, color, wait_ms=50):
+def colorWipe(strip, color, wait_ms=0):
     """Wipe color across display a pixel at a time."""
     for i in range(strip.numPixels()):
         strip.setPixelColor(i, color)
@@ -97,8 +97,8 @@ if __name__ == '__main__':
         colorWipe(strip, Color(0, 255, 0))  # Blue wipe
         colorWipe(strip, Color(0, 0, 255))  # Green wipe
         colorWipe(strip, Color(0, 0, 0, 255))  # White wipe
-        colorWipe(strip, Color(255, 255, 255))  # Composite White wipe
-        colorWipe(strip, Color(255, 255, 255, 255))  # Composite White + White LED wipe
+        # colorWipe(strip, Color(255, 255, 255))  # Composite White wipe
+        # colorWipe(strip, Color(255, 255, 255, 255))  # Composite White + White LED wipe
         # Theater chase animations.
         theaterChase(strip, Color(127, 0, 0))  # Red theater chase
         theaterChase(strip, Color(0, 127, 0))  # Green theater chase
