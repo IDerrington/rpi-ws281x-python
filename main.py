@@ -11,18 +11,18 @@ from rpi_ws281x import ws, Color, Adafruit_NeoPixel
 # LED strip configuration:
 LED_1_COUNT = 600       # Number of LED pixels.
 LED_1_PIN = 18          # GPIO pin connected to the pixels (must support PWM! GPIO 13 and 18 on RPi 3).
-LED_1_FREQ_HZ = 900000  # LED signal frequency in hertz (usually 800khz)
+LED_1_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_1_DMA = 10          # DMA channel to use for generating signal (Between 1 and 14)
-LED_1_BRIGHTNESS = 255   # Set to 0 for darkest and 255 for brightest
+LED_1_BRIGHTNESS = 50  # Set to 0 for darkest and 255 for brightest
 LED_1_INVERT = False    # True to invert the signal (when using NPN transistor level shift)
 LED_1_CHANNEL = 0       # 0 or 1
 LED_1_STRIP = ws.SK6812_STRIP_GRBW
 
 LED_2_COUNT = 600       # Number of LED pixels.
 LED_2_PIN = 13          # GPIO pin connected to the pixels (must support PWM! GPIO 13 or 18 on RPi 3).
-LED_2_FREQ_HZ = 900000  # LED signal frequency in hertz (usually 800khz)
+LED_2_FREQ_HZ = 800000  # LED signal frequency in hertz (usually 800khz)
 LED_2_DMA = 9           # DMA channel to use for generating signal (Between 1 and 14)
-LED_2_BRIGHTNESS = 255   # Set to 0 for darkest and 255 for brightest
+LED_2_BRIGHTNESS = 50  # Set to 0 for darkest and 255 for brightest
 LED_2_INVERT = False    # True to invert the signal (when using NPN transistor level shift)
 LED_2_CHANNEL = 1       # 0 or 1
 LED_2_STRIP = ws.SK6812_STRIP_GRBW
@@ -938,6 +938,33 @@ if __name__ == '__main__':
     strip2.begin()
 
     print('Press Ctrl-C to quit.')
+
+
+
+    blackout(strip1)
+    blackout(strip2)
+    time.sleep(3)
+
+    fill_color(strip1, (255, 0, 0, 0))  # Clear strip1
+    time.sleep(3)
+    fill_color(strip1, (0, 255, 0, 0))  # Clear strip1
+    time.sleep(3)
+    fill_color(strip1, (0, 0, 255, 0))  # Clear strip1
+    time.sleep(3)
+    fill_color(strip1, (0, 0, 0, 255))  # Clear strip1
+    time.sleep(3)
+
+    blackout(strip1)
+    time.sleep(3)
+    fill_color(strip2, (255, 0, 0, 0))  # Clear strip1
+    time.sleep(3)
+    fill_color(strip2,(0, 255, 0, 0))  # Clear strip1
+    time.sleep(3)
+    fill_color(strip2,(0, 0, 255, 0))  # Clear strip1
+    time.sleep(3)
+    fill_color(strip2,(0, 0, 0, 255))  # Clear strip1
+    time.sleep(3)
+
 
     # Black out any LEDs that may be still on for the last run
     blackout(strip1)
