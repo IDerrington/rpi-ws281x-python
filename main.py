@@ -728,6 +728,187 @@ def dice_visualizer_scaled(strip, roll=None, color=(255, 255, 255), roll_duratio
 
     return final_roll
 
+import time
+import math
+import random
+from rpi_ws281x import Color
+
+def wave_ripple_dual(strip1, strip2, duration=10, speed=0.05, ripple_spacing=15, fade_factor=0.85, color_cycle=True, independent=False):
+    """
+    Dual-strip ripple effect for NeoPixel strips (~600 LEDs).
+
+    :param strip1: First NeoPixel strip object
+    :param strip2: Second NeoPixel strip object
+    :param duration: Total time to run the effect
+    :param speed: Delay between frames
+    :param ripple_spacing: Distance between ripple rings
+    :param fade_factor: Ripple brightness fade factor
+    :param color_cycle: Enable color cycling
+    :param independent: If True, run separate ripple events for each strip
+    """
+    def get_color(angle):
+        i = int(angle * 256 * 6)
+        if i < 256:
+            return (255, i, 0)
+        elif i < 512:
+            return (255 - (i - 256), 255, 0)
+        elif i < 768:
+            return (0, 255, i - 512)
+        elif i < 1024:
+            return (0, 255 - (i - 768), 255)
+        elif i < 1280:
+            return (i - 1024, 0, 255)
+        else:
+            return (255, 0, 255 - (i - 1280))
+
+    def clear(strip):
+        for i in range(strip.numPixels()):
+            strip.setPixelColor(i, Color(0, 0, 0, 0))
+
+    def update_ripples(strip, ripples):
+        num_leds = strip.numPixels()
+        new_ripples = []
+        for ripple in ripples:
+            center = ripple['center']
+            age = ripple['age']
+            r, g, b = ripple['color']
+
+            for offset in range(0, num_leds, ripple_spacing):
+                for sign in [-1, 1]:
+                    pos = center + sign * (age + offset)
+                    if 0 <= pos < num_leds:
+                        decay = fade_factor ** (offset // ripple_spacing + 1)
+                        strip.setPixelColor(pos, Color(int(r * decay), int(g * decay), int(b * decay), 0))
+
+            ripple['age'] += 1
+            if ripple['age'] < num_leds:
+                new_ripples.append(ripple)
+
+        return new_ripples
+
+    num_leds_1 = strip1.numPixels()
+    num_leds_2 = strip2.numPixels()
+    ripples1 = []
+    ripples2 = [] if independent else ripples1
+
+    start_time = time.time()
+    while time.time() - start_time < duration:
+        clear(strip1)
+        clear(strip2)
+
+        # Occasionally start a ripple
+        if random.random() < 0.05:
+            center = random.randint(0, num_leds_1 - 1)
+            color = get_color(random.random()) if color_cycle else (0, 128, 255)
+            ripple = {'center': center, 'age': 0, 'color': color}
+            ripples1.append(ripple)
+            if independent:
+                # Optional second ripple for strip2
+                if random.random() < 0.8:
+                    center2 = random.randint(0, num_leds_2 - 1)
+                    color2 = get_color(random.random()) if color_cycle else (255, 100, 0)
+                    ripples2.append({'center': center2, 'age': 0, 'color': color2})
+
+        ripples1 = update_ripples(strip1, ripples1)
+        ripples2 = update_ripples(strip2, ripples2)
+        strip1.show()
+        strip2.show()
+        time.sleep(speed)
+
+    clear(strip1)
+    clear(strip2)
+    strip1.show()
+    strip2.show()
+
+import time
+import random
+from rpi_ws281x import Color
+
+import time
+import random
+from rpi_ws281x import Color
+
+def color_bounce(strip1, strip2, duration=15, num_bouncers=3, speed=0.001,
+                 independent=False, change_color_on_bounce=True, bar_size=5):
+    """
+    Color bouncing effect on two NeoPixel strips.
+    :param strip1: First NeoPixel strip object
+    :param strip2: Second NeoPixel strip object 
+    """ 
+
+    num_leds_1 = strip1.numPixels()
+    num_leds_2 = strip2.numPixels()
+
+    def get_random_color():
+        return tuple(random.randint(100, 255) for _ in range(3))
+
+    def clear(strip):
+        for i in range(strip.numPixels()):
+            strip.setPixelColor(i, Color(0, 0, 0))
+
+    def init_bouncers(num_leds, count):
+        return [{
+            'pos': random.randint(0, num_leds - 1),
+            'dir': random.choice([-1, 1]),
+            'color': get_random_color()
+        } for _ in range(count)]
+
+    bouncers1 = init_bouncers(num_leds_1, num_bouncers)
+    bouncers2 = init_bouncers(num_leds_2, num_bouncers) if independent else bouncers1
+
+    start_time = time.time()
+
+    while time.time() - start_time < duration:
+        clear(strip1)
+        clear(strip2)
+
+        # Draw bars on strip1
+        for bouncer in bouncers1:
+            r, g, b = bouncer['color']
+            center = int(bouncer['pos'])
+            for offset in range(-(bar_size // 2), bar_size // 2 + 1):
+                pos = center + offset
+                if 0 <= pos < num_leds_1:
+                    strip1.setPixelColor(pos, Color(r, g, b))
+
+        # Draw bars on strip2
+        for bouncer in bouncers2:
+            r, g, b = bouncer['color']
+            center = int(bouncer['pos'])
+            for offset in range(-(bar_size // 2), bar_size // 2 + 1):
+                pos = center + offset
+                if 0 <= pos < num_leds_2:
+                    strip2.setPixelColor(pos, Color(r, g, b))
+
+        strip1.show()
+        strip2.show()
+
+        # Update positions and directions
+        for bouncer in bouncers1:
+            bouncer['pos'] += bouncer['dir']
+            if bouncer['pos'] >= num_leds_1 or bouncer['pos'] < 0:
+                bouncer['dir'] *= -1
+                bouncer['pos'] += bouncer['dir'] * 2
+                if change_color_on_bounce:
+                    bouncer['color'] = get_random_color()
+
+        if independent:
+            for bouncer in bouncers2:
+                bouncer['pos'] += bouncer['dir']
+                if bouncer['pos'] >= num_leds_2 or bouncer['pos'] < 0:
+                    bouncer['dir'] *= -1
+                    bouncer['pos'] += bouncer['dir'] * 2
+                    if change_color_on_bounce:
+                        bouncer['color'] = get_random_color()
+
+        time.sleep(speed)
+
+    clear(strip1)
+    clear(strip2)
+    strip1.show()
+    strip2.show()
+
+
 def blackout(strip):
     for i in range(max(strip.numPixels(), strip.numPixels())):
         strip.setPixelColor(i, Color(0, 0, 0, 0))
@@ -764,10 +945,21 @@ if __name__ == '__main__':
     
     while True:
 
-        for _ in range(6):
-            result = dice_visualizer_scaled(strip1, color=(0, 255, 0), roll_duration=2, frame_delay=0.08)
-            print(f"Rolled: {result}")
-            time.sleep(2)
+        # Synchronized bouncing colors
+        color_bounce(strip1, strip2, duration=20, change_color_on_bounce = True)
+
+        # Independent bounces, unique colors & positions
+        color_bounce(strip1, strip2, duration=20, independent=True, change_color_on_bounce = True)
+
+        wave_ripple_dual(strip1, strip2, duration=15)
+
+        # Independent ripple on both strips
+        wave_ripple_dual(strip1, strip2, duration=15, independent=True)
+        
+        #for _ in range(6):
+        #    result = dice_visualizer_scaled(strip1, color=(0, 255, 0), roll_duration=2, frame_delay=0.08)
+        #    print(f"Rolled: {result}")
+        #    time.sleep(2)
 
         # Mirror bounce effect
         mirror_bounce(strip1, strip2, color=(0, 0 , 255), duration=20, speed=0.05)
