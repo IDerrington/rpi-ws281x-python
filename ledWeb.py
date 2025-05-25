@@ -81,7 +81,7 @@ def run_mirror_bounce(duration=15,
                       green=0,
                       blue=0,
                       white=0):
-    mirror_bounce(strip1,strip2, color=(0, 0, 255, 0), duration=10)
+    mirror_bounce(strip1,strip2, color=(red, green, blue, white), duration=duration)
 
 @register_effect("Fireflies", params={"duration": {"min": 5, "max": 60, "default": 15},
                                       "max_fireflies": {"min": 1, "max": 50, "default": 20}})
