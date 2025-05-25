@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>LED Effects Controller</title>
+  <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+  <style>
+    body { font-family: Arial; background: #111; color: #eee; text-align: center; padding: 20px; }
+    button {
+      margin: 10px;
+      padding: 15px 30px;
+      font-size: 16px;
+      background: #444;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>NeoPixel Effects</h1>
+  <div id="buttons">
+    {% for name in effects %}
+    <button onclick="runEffect('{{ name }}')">{{ name }}</button>
+    {% endfor %}
+  </div>
+
+  <script>
+    const socket = io();
+    function runEffect(name) {
+      socket.emit('run_effect', name);
+    }
+  </script>
+</body>
+</html>
