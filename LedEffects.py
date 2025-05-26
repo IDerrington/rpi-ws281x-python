@@ -1,10 +1,176 @@
 import time
+import random
+from rpi_ws281x import Color
+import colorsys
+import math
+import time
 
 def fill_color(strip, color):
     """Set all pixels on the strip to the given (r, g, b, w) color tuple."""
     for i in range(strip.numPixels()):
         strip[i] = Color(*color)
     strip.show()
+
+import time
+import math
+import random
+from rpi_ws281x import Color
+
+def sinister_pulse(strip1, strip2, duration: float = 20.0, fps: int = 30):
+    """
+    Sinister pulse effect for Blood on the Clocktower atmosphere.
+    Pulses dark red/purple, occasionally scans a bright "eye".
+    :param strip1: First NeoPixel strip
+    :param strip2: Second NeoPixel strip
+    :param duration: Duration to run the effect (seconds)
+    :param fps: Frames per second
+    """
+    num_leds = strip1.numPixels()
+    start_time = time.time()
+    frame_delay = 1.0 / fps
+    phase = 0.0
+    eye_active = False
+    eye_position = 0
+    eye_direction = 1
+    next_eye_time = time.time() + random.uniform(3.0, 8.0)
+
+    def pulse_color(intensity):
+        # Base red/purple tone with low intensity
+        r = int(40 + 100 * intensity)
+        g = 0
+        b = int(40 + 60 * intensity)
+        w = 0
+        return Color(r, g, b, w)
+
+    while time.time() - start_time < duration:
+        frame_start = time.perf_counter()
+
+        # Breathing effect using sine wave
+        intensity = (1 + math.sin(phase)) / 2  # Range [0, 1]
+        base_color = pulse_color(intensity)
+
+        for i in range(num_leds):
+            strip1.setPixelColor(i, base_color)
+            strip2.setPixelColor(i, base_color)
+
+        # Occasionally scan an "eye" of bright red
+        if eye_active:
+            eye_col = Color(255, 0, 0, 50)
+            if 0 <= eye_position < num_leds:
+                strip1.setPixelColor(eye_position, eye_col)
+                strip2.setPixelColor(eye_position, eye_col)
+            eye_position += eye_direction
+            if eye_position >= num_leds or eye_position < 0:
+                eye_active = False
+                next_eye_time = time.time() + random.uniform(3.0, 8.0)
+        elif time.time() >= next_eye_time:
+            eye_active = True
+            eye_position = 0 if random.random() < 0.5 else num_leds - 1
+            eye_direction = 1 if eye_position == 0 else -1
+
+        strip1.show()
+        strip2.show()
+
+        phase += 0.1
+
+        # Maintain consistent FPS
+        elapsed = time.perf_counter() - frame_start
+        sleep_time = frame_delay - elapsed
+        if sleep_time > 0:
+            time.sleep(sleep_time)
+
+def morse_band_scroll(strip1, strip2, text, duration=10, direction=1, fps=30):
+    """
+    Scroll a Morse code message across two LED strips in a flashing band.
+
+    :param strip1: First NeoPixel strip
+    :param strip2: Second NeoPixel strip
+    :param text: The text to scroll in Morse code
+    :param duration: Duration to run the effect (seconds)
+    :param direction: 1 = left-to-right, -1 = right-to-left
+    :param fps: Frames per second
+    """
+    # Define Morse code dictionary
+    MORSE_CODE = {
+        'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..',
+        'E': '.', 'F': '..-.', 'G': '--.', 'H': '....',
+        'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+        'M': '--', 'N': '-.', 'O': '---', 'P': '.--.',
+        'Q': '--.-', 'R': '.-.', 'S': '...', 'T': '-',
+        'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+        'Y': '-.--', 'Z': '--..',
+        '1': '.----', '2': '..---', '3': '...--', '4': '....-',
+        '5': '.....', '6': '-....', '7': '--...', '8': '---..',
+        '9': '----.', '0': '-----',
+        ' ': ' '
+    }
+
+    # Union Jack color theme
+    COLORS = {
+        'dot': (255, 0, 0, 0),    # Red
+        'dash': (0, 0, 255, 0),   # Blue
+        'off': (0, 0, 0, 0),      # Black / off
+        'bg': (0, 0, 0, 0),       # Background
+        'flash': (255, 255, 255, 0)  # White for flashing edge
+    }
+
+    def text_to_morse_pattern(text):
+        pattern = []
+        for char in text.upper():
+            morse = MORSE_CODE.get(char, '')
+            for symbol in morse:
+                if symbol == '.':
+                    pattern += ['dot'] * 2 + ['off'] * 2
+                elif symbol == '-':
+                    pattern += ['dash'] * 6 + ['off'] * 2
+            pattern += ['off'] * 4  # inter-character space
+        return pattern
+
+    # Convert text to morse pattern
+    morse_pattern = text_to_morse_pattern(text)
+
+    num_pixels = strip1.numPixels()
+    band_width = 10
+    frame_delay = 1.0 / fps
+    start_time = time.time()
+
+    # Pad pattern and duplicate for scrolling
+    scroll_pattern = ['off'] * num_pixels + morse_pattern + ['off'] * num_pixels
+    if direction < 0:
+        scroll_pattern = list(reversed(scroll_pattern))
+    pattern_len = len(scroll_pattern)
+
+    offset = 0
+    while time.time() - start_time < duration:
+        frame_start = time.perf_counter()
+
+        # Determine center of band
+        band_center = offset % (pattern_len + num_pixels)
+        for i in range(num_pixels):
+            pos = i if direction > 0 else num_pixels - 1 - i
+            pattern_index = (band_center - band_width // 2 + i) % pattern_len
+
+            symbol = scroll_pattern[pattern_index] if 0 <= pattern_index < pattern_len else 'off'
+            color = COLORS.get(symbol, COLORS['bg'])
+
+            # Add a white flashing edge
+            if i == (num_pixels - band_width) // 2 or i == (num_pixels + band_width) // 2:
+                color = COLORS['flash']
+
+            strip1.setPixelColor(pos, Color(*color))
+            strip2.setPixelColor(pos, Color(*color))
+
+        strip1.show()
+        strip2.show()
+
+        offset = (offset + 1) % pattern_len
+
+        frame_elapsed = time.perf_counter() - frame_start
+        sleep_time = frame_delay - frame_elapsed
+        if sleep_time > 0:
+            time.sleep(sleep_time)
+
+
 
 def mirror_bounce(stripA, stripB=None, color=(0, 0, 255, 0), duration=10):
     """
@@ -76,6 +242,9 @@ def fireflies(stripA, stripB=None, duration=30, max_fireflies=20, frame_rate=30)
     :param max_fireflies: Max number of simultaneous fireflies
     :param frame_rate: Frames per second
     """
+    
+    start_time = time.time()
+    
     num_pixels = stripA.numPixels()
     if stripB:
         num_pixels = min(num_pixels, stripB.numPixels())
@@ -92,7 +261,7 @@ def fireflies(stripA, stripB=None, duration=30, max_fireflies=20, frame_rate=30)
         scaled_color = tuple(int(c * brightness) for c in base_color)
         return scaled_color
 
-    for frame in range(total_frames):
+    while time.time() - start_time < duration:
         # start = time.perf_counter()
         # Occasionally spawn a new firefly if under max count
         if len(fireflies) < max_fireflies and random.random() < 0.1:
@@ -174,7 +343,9 @@ def rainbow_with_sparkles(stripA, stripB=None, duration=10, sparkle_chance=0.05,
     # Initialize sparkle fade trackers
     sparkle_fade = [0] * num_pixels
 
-    for frame in range(total_frames):
+    start_time = time.time()
+
+    while time.time() - start_time < duration:
         for i in range(num_pixels):
             # Sparkle logic
             if sparkle_fade[i] > 0:
@@ -200,63 +371,66 @@ def rainbow_with_sparkles(stripA, stripB=None, duration=10, sparkle_chance=0.05,
             stripB.show()
 
         color_offset = (color_offset + 1) % 256
-        time.sleep(frame_delay)
+        #time.sleep(frame_delay)
 
-def timer_effect(stripA, stripB=None, total_time=10, reverse=False, frame_rate=30):
+
+
+ 
+def timer_effect(stripA, stripB=None, duration=10, reverse=False, frame_rate=30):
     """
-    Timer countdown effect:
-    - 0–50%: Solid Green
-    - 50–75%: Fade Green → Amber
-    - 75–100%: Fade Amber → Red
-    - Final 5s: Flash on/off every 0.5s
-
+    Timer countdown effect with real-time timing and consistent frame rate.
     :param stripA: First NeoPixel strip
-    :param stripB: Optional second strip
-    :param total_time: Duration in seconds
-    :param reverse: LEDs turn off over time if True
-    :param frame_rate: Frames per second
+    :param stripB: Optional second NeoPixel strip
+    :param duration: Total duration in seconds
+    :param reverse: If True, counts down from duration to 0
+    :param frame_rate: Frames per second for smooth animation
     """
-    import time
-    from rpi_ws281x import Color
-
+    start_time = time.time()
     num_pixels = stripA.numPixels()
     if stripB:
         num_pixels = min(num_pixels, stripB.numPixels())
 
-    total_frames = int(total_time * frame_rate)
     frame_delay = 1.0 / frame_rate
-    flash_interval_frames = int(0.5 / frame_delay)
+    last_flash_time = 0
+    flash_state = True
 
-    def get_color(progress):
-        """Return a color depending on the progress."""
-        if progress < 0.5:
-            # Solid green
-            return (0, 255, 0, 0)
-        elif progress < 0.75:
-            # Green → Amber (255,191,0)
-            t = (progress - 0.5) / 0.25
-            r = int(t * 255)
-            g = int(255 - t * (255 - 191))
-            return (r, g, 0, 0)
-        else:
-            # Amber → Red
-            t = (progress - 0.75) / 0.25
-            r = 255
-            g = int(191 * (1 - t))
-            return (r, g, 0, 0)
+    while True:
+        frame_start = time.time()
 
-    for frame in range(total_frames + 1):
-        progress = frame / total_frames
+        elapsed = frame_start - start_time
+        if elapsed >= duration:
+            break
+
+        progress = elapsed / duration
         active_pixels = int(progress * num_pixels)
         if reverse:
             active_pixels = num_pixels - active_pixels
 
-        in_final_5s = frame >= total_frames - (5 * frame_rate)
-        flash_off = in_final_5s and ((frame // flash_interval_frames) % 2 == 1)
-        color = get_color(progress)
+        # Flash logic (toggle every 0.5s in last 5 seconds)
+        if elapsed >= duration - 5:
+            if frame_start - last_flash_time >= 0.5:
+                flash_state = not flash_state
+                last_flash_time = frame_start
+        else:
+            flash_state = True
 
+        # Determine color based on progress
+        if progress < 0.5:
+            color = (0, 255, 0, 0)
+        elif progress < 0.75:
+            t = (progress - 0.5) / 0.25
+            r = int(t * 255)
+            g = int(255 - t * (255 - 191))
+            color = (r, g, 0, 0)
+        else:
+            t = (progress - 0.75) / 0.25
+            r = 255
+            g = int(191 * (1 - t))
+            color = (r, g, 0, 0)
+
+        # Set pixels
         for i in range(num_pixels):
-            if flash_off:
+            if not flash_state:
                 pixel_color = (0, 0, 0, 0)
             elif (not reverse and i < active_pixels) or (reverse and i >= active_pixels):
                 pixel_color = color
@@ -270,19 +444,28 @@ def timer_effect(stripA, stripB=None, total_time=10, reverse=False, frame_rate=3
         stripA.show()
         if stripB:
             stripB.show()
-        time.sleep(frame_delay)
+
+        # Maintain consistent frame rate
+        frame_end = time.time()
+        elapsed_frame_time = frame_end - frame_start
+        sleep_time = frame_delay - elapsed_frame_time
+        if sleep_time > 0:
+            print(f"Sleeping for {sleep_time:.3f} seconds to maintain frame rate")
+            time.sleep(sleep_time)
 
 
-def fire_effect(stripA, stripB, duration=10.0, cooling=55, sparking=120, frame_delay=0.03):
+
+def fire_effect(stripA, stripB, duration=10.0, cooling=55, sparking=120, frame_rate=30):
     """
-    Fire effect on two NeoPixel strips (based on Fire2012 by Mark Kriegsman).
-    
+    Fire effect on two NeoPixel strips (based on Fire2012 by Mark Kriegsman),
+    with accurate timing using frame rate and processing time compensation.
+
     :param stripA: First NeoPixel strip
     :param stripB: Second NeoPixel strip
     :param duration: Total duration to run the effect (in seconds)
     :param cooling: Rate at which heat cools (higher = more cooling)
     :param sparking: Chance of new sparks (0–255, higher = more sparks)
-    :param frame_delay: Delay between frames (in seconds)
+    :param frame_rate: Desired frames per second
     """
     import time, random
     from rpi_ws281x import Color
@@ -290,14 +473,13 @@ def fire_effect(stripA, stripB, duration=10.0, cooling=55, sparking=120, frame_d
     num_pixels = min(stripA.numPixels(), stripB.numPixels())
     heatA = [0] * num_pixels
     heatB = [0] * num_pixels
-    total_frames = int(duration / frame_delay)
+    frame_delay = 1.0 / frame_rate
+    start_time = time.time()
 
     def heat_to_color(heat):
         """Convert heat value (0–255) to flame color."""
         t192 = (heat * 191) // 255
-
-        heatramp = t192 & 63  # 0..63
-        heatramp <<= 2        # scale up to 0..252
+        heatramp = (t192 & 63) << 2  # scale up to 0–252
 
         if t192 > 128:
             return (255, 255, heatramp, 0)  # White-ish
@@ -307,44 +489,54 @@ def fire_effect(stripA, stripB, duration=10.0, cooling=55, sparking=120, frame_d
             return (heatramp, 0, 0, 0)      # Red
 
     def update_fire(heat, strip):
-        # Step 1: Cool down every cell a little
+        # Step 1: Cool down
         for i in range(num_pixels):
             cool = random.randint(0, (cooling * 10) // num_pixels + 2)
             heat[i] = max(0, heat[i] - cool)
 
-        # Step 2: Heat diffusion upward
+        # Step 2: Heat diffusion
         for k in range(num_pixels - 1, 2, -1):
             heat[k] = (heat[k - 1] + heat[k - 2] + heat[k - 2]) // 3
 
-        # Step 3: Spark new heat near the bottom
+        # Step 3: Sparking
         if random.randint(0, 255) < sparking:
             y = random.randint(0, 6)
             heat[y] = min(255, heat[y] + random.randint(160, 255))
 
-        # Step 4: Map heat to color and write to LEDs
+        # Step 4: Map heat to color
         for j in range(num_pixels):
             color = heat_to_color(heat[j])
             strip.setPixelColor(j, Color(*color))
         strip.show()
 
-    for _ in range(total_frames):
+    while (time.time() - start_time) < duration:
+        frame_start = time.time()
+
         update_fire(heatA, stripA)
         update_fire(heatB, stripB)
-        time.sleep(frame_delay)
 
-def union_jack_scroll_sparkle(stripA, stripB, duration=10.0, frame_delay=0.05, sparkle_chance=0.1, fade_steps=8):
+        frame_end = time.time()
+        elapsed = frame_end - frame_start
+        sleep_time = frame_delay - elapsed
+        if sleep_time > 0:
+            print(f"Sleeping for {sleep_time:.3f} seconds to maintain frame rate")
+            time.sleep(sleep_time)
+
+
+def union_jack_scroll_sparkle(stripA, stripB, duration=10.0, frame_rate=20, sparkle_chance=0.1, fade_steps=8):
     """
     Stylized scrolling Union Jack effect with sparkles on two NeoPixel strips.
 
     :param stripA: First NeoPixel strip (Adafruit_NeoPixel).
     :param stripB: Second NeoPixel strip.
     :param duration: Total run time in seconds.
-    :param frame_delay: Time between frames (seconds).
+    :param frame_rate: Frames per second.
     :param sparkle_chance: Chance per pixel per frame for a sparkle.
     :param fade_steps: How long sparkles fade (in frames).
     """
     num_pixels = min(stripA.numPixels(), stripB.numPixels())
-    total_frames = int(duration / frame_delay)
+    frame_delay = 1.0 / frame_rate
+    start_time = time.time()
 
     # Color definitions
     RED   = (255, 0, 0, 0)
@@ -386,81 +578,117 @@ def union_jack_scroll_sparkle(stripA, stripB, duration=10.0, frame_delay=0.05, s
         strip.show()
         return next_sparkles
 
-    # Main loop
-    for frame in range(total_frames):
+    frame = 0
+    while time.time() - start_time < duration:
+        frame_start = time.time()
+
         sparklesA = update_strip(stripA, frame, sparklesA)
         sparklesB = update_strip(stripB, frame, sparklesB)
-        time.sleep(frame_delay)
+
+        frame += 1
+        elapsed = time.time() - frame_start
+        sleep_time = frame_delay - elapsed
+        if sleep_time > 0:
+            print(f"Sleeping for {sleep_time:.3f} seconds to maintain frame rate")
+            time.sleep(sleep_time)
 
 
-def matrix_effect(stripA, stripB, 
-                  duration=10.0, frame_delay=0.05, 
-                  trail_length=10):
-    """
-    Matrix rain effect on two NeoPixel strips.
-    
-    :param stripA: First NeoPixel strip.
-    :param stripB: Second NeoPixel strip.
-    :param duration: Total time to run effect (seconds).
-    :param frame_delay: Delay between frames (seconds).
-    :param trail_length: How many LEDs the trail lasts.
-    """
-    start = time.perf_counter()
+def matrix_effect(stripA, stripB, duration=10.0, frame_rate=30, min_trail=8, max_trail=20, reverse=False):
+
+    rand1 = 20
+    rand2 = 30
+    frame_time = 1.0 / frame_rate
+    start_time = time.perf_counter()
     num_pixels = min(stripA.numPixels(), stripB.numPixels())
-    total_frames = int(duration / frame_delay)
 
-    # Each strip keeps a list of active drops, each drop = current head position
     dropsA = []
     dropsB = []
 
-    while time.perf_counter() - start < duration:
-        # Occasionally start a new drop with some probability
-        if random.random() < 0.3:  # Adjust frequency
-            dropsA.append(0)  # new drop starts at the top pixel index 0
+    def brightness_curve(i, trail_length):
+        # Exponential fade for smoother falloff
+        return int(200 * (0.6 ** i))
+
+    # Color phase timing variables
+    color_phase = 'green'  # start phase
+    next_phase_time = start_time + random.uniform(rand1, rand2)  # initial random duration
+
+    while True:
+        frame_start = time.perf_counter()
+        elapsed = frame_start - start_time
+        if elapsed >= duration:
+            break
+
+        # Switch color phase if time elapsed
+        if frame_start >= next_phase_time:
+            color_phase = 'blue' if color_phase == 'green' else 'green'
+            next_phase_time = frame_start + random.uniform(rand1, rand2)
+
+        # Possibly add new drops to each strip
         if random.random() < 0.3:
-            dropsB.append(0)
+            dropsA.append({
+                'head': (num_pixels - 1 if reverse else 0),
+                'trail': random.randint(min_trail, max_trail)
+            })
+        if random.random() < 0.3:
+            dropsB.append({
+                'head': (num_pixels - 1 if reverse else 0),
+                'trail': random.randint(min_trail, max_trail)
+            })
 
-        # Clear strips (fade previous frame by dimming)
+        # Clear background to very dark green
         for i in range(num_pixels):
-            # Fade every pixel by some factor (dimming trail)
-            for strip in (stripA, stripB):
-                # Get current color and fade it down
-                # Unfortunately Adafruit_NeoPixel doesn't have getPixelColor with RGBA tuple,
-                # so we approximate by storing colors ourselves or just fade by setting a dim green.
-                # Here we just set background as near black.
-                strip.setPixelColor(i, Color(0, 30, 0, 0))  # dark green fade
+            stripA.setPixelColor(i, Color(0, 8, 0, 0))  # Very dark green background
+            stripB.setPixelColor(i, Color(0, 8, 0, 0))
 
-        # Update and draw drops for strip A
-        new_dropsA = []
-        for head in dropsA:
-            # Draw head pixel bright green
-            stripA.setPixelColor(head, Color(0, 255, 0, 0))
-            # Draw trail behind the head, gradually dimmer
-            for t in range(1, trail_length):
-                trail_pos = head - t
-                if 0 <= trail_pos < num_pixels:
-                    brightness = max(0, 255 - (255 // trail_length) * t)
-                    stripA.setPixelColor(trail_pos, Color(0, brightness, 0, 0))
-            # Move drop down
-            if head + 1 < num_pixels:
-                new_dropsA.append(head + 1)
-        dropsA = new_dropsA
+        def update_drops(drops, strip):
+            new_drops = []
+            for drop in drops:
+                head = drop['head']
+                trail = drop['trail']
 
-        # Update and draw drops for strip B
-        new_dropsB = []
-        for head in dropsB:
-            stripB.setPixelColor(head, Color(0, 255, 0, 0))
-            for t in range(1, trail_length):
-                trail_pos = head - t
-                if 0 <= trail_pos < num_pixels:
-                    brightness = max(0, 255 - (255 // trail_length) * t)
-                    stripB.setPixelColor(trail_pos, Color(0, brightness, 0, 0))
-            if head + 1 < num_pixels:
-                new_dropsB.append(head + 1)
-        dropsB = new_dropsB
+                # Draw head (bright white-green)
+                strip.setPixelColor(head, Color(180, 255, 180, 0))
+
+                # Draw trail with flicker & exponential fade
+                for i in range(1, trail + 1):
+                    pos = head + i if reverse else head - i
+                    if 0 <= pos < num_pixels:
+                        base_brightness = brightness_curve(i, trail)
+                        flicker = random.randint(-30, 30)
+                        brightness = max(0, min(255, base_brightness + flicker))
+
+                        if color_phase == 'green':
+                            r = 0
+                            g = brightness
+                            b = brightness // 3  # greenish with blue tint
+                        else:
+                            # Shifted to bluish shades
+                            r = brightness // 4
+                            g = brightness // 2
+                            b = brightness
+
+                        strip.setPixelColor(pos, Color(r, g, b, 0))
+
+                # Move head position
+                next_head = head - 1 if reverse else head + 1
+                if 0 <= next_head < num_pixels:
+                    drop['head'] = next_head
+                    new_drops.append(drop)
+            return new_drops
+
+        dropsA = update_drops(dropsA, stripA)
+        dropsB = update_drops(dropsB, stripB)
 
         stripA.show()
         stripB.show()
+
+        # Maintain frame rate accounting for processing time
+        time_to_sleep = frame_time - (time.perf_counter() - frame_start)
+        if time_to_sleep > 0:
+            time.sleep(time_to_sleep)
+
+
+
 
 def sparkle_dual_fade(stripA, stripB, 
                       background=(0, 0, 0, 0), 
@@ -510,41 +738,85 @@ def sparkle_dual_fade(stripA, stripB,
         activeB = fade_and_draw(stripB, activeB)
         time.sleep(frame_delay)
 
-def sparkle_dual(stripA, stripB, 
-                 colorA=(255, 255, 255, 0), colorB=(255, 255, 255, 0), 
-                 background=(0, 0, 0, 0), 
-                 sparkles_per_frame=10, 
-                 duration=2.0, frame_delay=0.05):
+
+def sparkle_dual_fade(stripA, stripB, 
+                      colorA=(0, 0, 0, 255), colorB=(0, 0, 0, 255), 
+                      background=(0, 0, 0, 0), 
+                      sparkles_per_frame=5, 
+                      fade_steps=10, 
+                      duration=5.0, frame_rate=30):
     """
-    Apply sparkles to two NeoPixel strips simultaneously.
+    Sparkles with fading on two NeoPixel strips.
 
     :param stripA: First strip.
     :param stripB: Second strip.
-    :param colorA: Sparkle color for strip A.
-    :param colorB: Sparkle color for strip B.
-    :param background: Background color for both strips.
-    :param sparkles_per_frame: Sparkles per strip per frame.
-    :param duration: Total effect duration (in seconds).
-    :param frame_delay: Time between frames (in seconds).
+    :param colorA: Base sparkle color for strip A.
+    :param colorB: Base sparkle color for strip B.
+    :param background: Background color.
+    :param sparkles_per_frame: How many new sparkles per frame per strip.
+    :param fade_steps: How many frames for sparkle to fade out.
+    :param duration: Total run time in seconds.
+    :param frame_rate: Frames per second.
     """
-    count = int(duration / frame_delay)
+    def scale_color(color, scale):
+        """Scale RGBW tuple by scale (0.0 to 1.0)."""
+        return tuple(int(c * scale) for c in color)
+    
+    frame_time = 1.0 / frame_rate
+    start_time = time.perf_counter()
     num_pixels = min(stripA.numPixels(), stripB.numPixels())
 
-    for _ in range(count):
+    sparklesA = []  # list of [index, age]
+    sparklesB = []
+
+    while True:
+        frame_start = time.perf_counter()
+        if frame_start - start_time >= duration:
+            break
+
+        # Clear background first
         fill_color(stripA, background)
         fill_color(stripB, background)
 
-        indicesA = random.sample(range(num_pixels), min(sparkles_per_frame, num_pixels))
-        indicesB = random.sample(range(num_pixels), min(sparkles_per_frame, num_pixels))
+        # Add new sparkles randomly on strip A
+        for _ in range(sparkles_per_frame):
+            idx = random.randint(0, num_pixels - 1)
+            sparklesA.append([idx, 0])  # age = 0
 
-        for i in indicesA:
-            stripA.setPixelColor(i, Color(*colorA))
-        for i in indicesB:
-            stripB.setPixelColor(i, Color(*colorB))
+        # Add new sparkles randomly on strip B
+        for _ in range(sparkles_per_frame):
+            idx = random.randint(0, num_pixels - 1)
+            sparklesB.append([idx, 0])
+
+        # Draw and update sparkles on strip A
+        new_sparklesA = []
+        for idx, age in sparklesA:
+            if age <= fade_steps:
+                brightness = 1.0 - (age / fade_steps)
+                color = scale_color(colorA, brightness)
+                stripA.setPixelColor(idx, Color(*color))
+                new_sparklesA.append([idx, age + 1])
+
+        # Draw and update sparkles on strip B
+        new_sparklesB = []
+        for idx, age in sparklesB:
+            if age <= fade_steps:
+                brightness = 1.0 - (age / fade_steps)
+                color = scale_color(colorB, brightness)
+                stripB.setPixelColor(idx, Color(*color))
+                new_sparklesB.append([idx, age + 1])
+
+        sparklesA = new_sparklesA
+        sparklesB = new_sparklesB
 
         stripA.show()
         stripB.show()
-        time.sleep(frame_delay)
+
+        # Maintain consistent frame rate
+        elapsed = time.perf_counter() - frame_start
+        sleep_time = frame_time - elapsed
+        if sleep_time > 0:
+            time.sleep(sleep_time)
 
 def alternate_flash_varied_colors(stripA, stripB, colors=None, off=(0, 0, 0, 0), flashes=10, delay=0.5):
     """
@@ -565,78 +837,99 @@ def alternate_flash_varied_colors(stripA, stripB, colors=None, off=(0, 0, 0, 0),
             (255, 255, 0, 0),   # Yellow
             (0, 255, 255, 0),   # Cyan
             (255, 0, 255, 0),   # Magenta
-            (0, 0, 0, 255),     # White LED channel only
+            (255, 255, 255, 0), # White (all RGB channels)
         ]
 
     for i in range(flashes):
+        cycle_start = time.perf_counter()
         color = colors[i % len(colors)]
 
-        fill_color(stripA,color) 
+        fill_color(stripA, color)
         fill_color(stripB, off)
         stripA.show()
         stripB.show()
-        time.sleep(delay)
 
+        # Wait remaining time considering processing
+        elapsed = time.perf_counter() - cycle_start
+        to_sleep = delay - elapsed
+        if to_sleep > 0:
+            time.sleep(to_sleep)
+
+        cycle_start = time.perf_counter()
         fill_color(stripA, off)
-        fill_color(stripB, color)       
+        fill_color(stripB, color)
         stripA.show()
         stripB.show()
-        time.sleep(delay)
 
-def move_band( strip1, strip2,
-               bandsize : int = 20, 
-               dir = 1,
-               foreground_colour = (0, 255 , 0, 0 ),
-               background_colour = (255, 0, 0, 0),
-               speed = 4
-              ):
-    """
-    A band of colour moves through the strip.   
-    
-    lpixels:            NeoPixel object
-    bandsize:           size of the band
-    dir:                direction of the band
-    foreground_colour:  colour of the band
-    background_colour:  colour of the background
-    speed:              speed of the band
-    """
+        elapsed = time.perf_counter() - cycle_start
+        to_sleep = delay - elapsed
+        if to_sleep > 0:
+            time.sleep(to_sleep)
 
-    num_pixels = len(strip1)
-    
+
+def move_band(strip1, strip2,
+              bandsize: int = 20,
+              dir: int = 1,
+              foreground_colour=(0, 255, 0, 0),
+              background_colour=(255, 0, 0, 0),
+              speed: float = 0.1):
+    """
+    Move a band of colour through two NeoPixel strips, accounting for processing time.
+
+    :param strip1: First NeoPixel strip
+    :param strip2: Second NeoPixel strip
+    :param bandsize: Size of the moving band (number of LEDs)
+    :param dir: Direction (1 for forward, -1 for backward)
+    :param foreground_colour: Color of the band (RGBA tuple)
+    :param background_colour: Color of the background (RGBA tuple)
+    :param speed: Desired time delay between moves (seconds, smaller = faster)
+    """
+    num_pixels = strip1.numPixels()
+
     fill_color(strip1, background_colour)
-    fill_color(strip2, background_colour)   
+    fill_color(strip2, background_colour)
 
+    if dir > 0:
+        start_pos = 0
+        end_pos = num_pixels - bandsize
+        step = 1
+    else:
+        start_pos = num_pixels - bandsize
+        end_pos = 0
+        step = -1
 
-    # Create the band
-    for idx in range(bandsize):
-        if dir > 0:
-            strip1[idx] = Color(*foreground_colour)
-            strip2[idx] = Color(*foreground_colour)
-        if dir < 0:
-            strip1 [num_pixels - 1 - idx] = Color(*foreground_colour)
-            strip2 [num_pixels - 1 - idx] = Color(*foreground_colour)
-
+    # Draw initial band
+    for i in range(bandsize):
+        pos = start_pos + i * dir
+        strip1.setPixelColor(pos, Color(*foreground_colour))
+        strip2.setPixelColor(pos, Color(*foreground_colour))
     strip1.show()
-    strip2.show()    
-    
-    # Move the band
-    for position in range(num_pixels - bandsize -1):
-        if dir > 0:
-            strip1[position] = Color(*background_colour)
-            strip1[bandsize + position] = Color(*foreground_colour)
+    strip2.show()
 
-            strip2[position] = Color(*background_colour)
-            strip2[bandsize + position] = Color(*foreground_colour)
-        if dir < 0:
-            strip1[num_pixels - 1 - position] = Color(*background_colour)
-            strip1[num_pixels - bandsize - position -1 ] = Color(*foreground_colour)
+    pos = start_pos
+    while pos != end_pos + step:
+        frame_start = time.perf_counter()
 
-            strip2[num_pixels - 1 - position] = Color(*background_colour)
-            strip2[num_pixels - bandsize - position -1 ] = Color(*foreground_colour)
-        
-        if position % speed == 0:
-            strip1.show()
-            strip2.show()
+        trailing_pixel = pos - dir
+        if 0 <= trailing_pixel < num_pixels:
+            strip1.setPixelColor(trailing_pixel, Color(*background_colour))
+            strip2.setPixelColor(trailing_pixel, Color(*background_colour))
+
+        leading_pixel = pos + bandsize * dir
+        if 0 <= leading_pixel < num_pixels:
+            strip1.setPixelColor(leading_pixel, Color(*foreground_colour))
+            strip2.setPixelColor(leading_pixel, Color(*foreground_colour))
+
+        strip1.show()
+        strip2.show()
+
+        pos += step
+
+        frame_end = time.perf_counter()
+        elapsed = frame_end - frame_start
+        sleep_time = speed - elapsed
+        if sleep_time > 0:
+            time.sleep(sleep_time)
 
 
 def multiColorWipe(strip1, strip2, color1, color2, wait_ms=5):
@@ -793,93 +1086,174 @@ def wave_ripple_dual(strip1, strip2, duration=10, speed=0.05, ripple_spacing=15,
     strip1.show()
     strip2.show()
 
-import time
-import random
-from rpi_ws281x import Color
 
-import time
-import random
-from rpi_ws281x import Color
 
-def color_bounce(strip1, strip2, duration=15, num_bouncers=3, speed=0.001,
+def color_wave_brightness(strip1, strip2, duration=15, fps=60,
+                          wave_speed=0.2, wave_frequency=2.0):
+    """
+    Slowly changes color while varying brightness across the strips in a wave pattern.
+    Uses precise timing and compensates for processing overhead.
+    
+    :param strip1: First NeoPixel strip
+    :param strip2: Second NeoPixel strip
+    :param duration: Total duration of effect in seconds
+    :param fps: Target frames per second
+    :param wave_speed: Speed of the brightness wave (cycles/sec)
+    :param wave_frequency: Number of wave peaks across the strip
+    """
+    num_pixels = strip1.numPixels()
+    frame_interval = 1 / fps
+    start_time = time.perf_counter()
+
+    def apply_wave(strip, base_color, t):
+        for i in range(strip.numPixels()):
+            x = i / strip.numPixels()
+            angle = 2 * math.pi * (wave_frequency * x + wave_speed * t)
+            brightness = (math.sin(angle) + 1) / 2
+
+            r = int(base_color[0] * brightness)
+            g = int(base_color[1] * brightness)
+            b = int(base_color[2] * brightness)
+            w = int(base_color[3] * brightness)
+
+            strip.setPixelColor(i, Color(r, g, b, w))
+        strip.show()
+
+    while True:
+        now = time.perf_counter()
+        elapsed = now - start_time
+        if elapsed > duration:
+            break
+
+        # Hue cycles at 1 cycle every 10 seconds
+        hue = (elapsed / 10.0) % 1.0
+        r, g, b = [int(c * 255) for c in colorsys.hsv_to_rgb(hue, 1.0, 1.0)]
+        base_color = (r, g, b, 0)  # Optional: add W channel as needed
+
+        apply_wave(strip1, base_color, elapsed)
+        apply_wave(strip2, base_color, elapsed)
+
+        frame_time = time.perf_counter() - now
+        sleep_time = frame_interval - frame_time
+        if sleep_time > 0:
+            time.sleep(sleep_time)
+
+
+def color_bounce(strip1, strip2, duration=15, num_bouncers=3, fps=60,
                  independent=False, change_color_on_bounce=True, bar_size=5):
     """
-    Color bouncing effect on two NeoPixel strips.
+    Color bars bounce off each other and the strip ends on two NeoPixel RGBW strips.
+
     :param strip1: First NeoPixel strip object
-    :param strip2: Second NeoPixel strip object 
-    """ 
-    
-    num_leds_1 = strip1.numPixels()
-    num_leds_2 = strip2.numPixels()
+    :param strip2: Second NeoPixel strip object
+    :param duration: Total duration to run the effect (in seconds)
+    :param num_bouncers: Number of moving color bars
+    :param fps: Frames per second
+    :param independent: If True, use different bouncers for each strip
+    :param change_color_on_bounce: Change color on bounce
+    :param bar_size: Size of each color bar
+    """
+    import time
+    import random
 
     def get_random_color():
-        return tuple(random.randint(100, 255) for _ in range(3))
+        return tuple(random.randint(100, 255) for _ in range(4))  # RGBW
 
     def clear(strip):
         for i in range(strip.numPixels()):
-            strip.setPixelColor(i, Color(0, 0, 0))
+            strip.setPixelColor(i, Color(0, 0, 0, 0))
 
     def init_bouncers(num_leds, count):
-        return [{
-            'pos': random.randint(0, num_leds - 1),
-            'dir': random.choice([-1, 1]),
-            'color': get_random_color()
-        } for _ in range(count)]
+        spacing = num_leds // (count + 1)
+        return [
+            {
+                'pos': spacing * (i + 1),
+                'dir': random.choice([-1, 1]),
+                'color': get_random_color()
+            } for i in range(count)
+        ]
+
+    num_leds_1 = strip1.numPixels()
+    num_leds_2 = strip2.numPixels()
+    delay = 1.0 / fps
 
     bouncers1 = init_bouncers(num_leds_1, num_bouncers)
     bouncers2 = init_bouncers(num_leds_2, num_bouncers) if independent else bouncers1
 
-    start_time = time.time()
+    start_time = time.perf_counter()
 
-    while time.time() - start_time < duration:
+    def draw_bouncers(strip, bouncers, num_leds):
+        for b in bouncers:
+            r, g, b_, w = b['color']
+            center = int(b['pos'])
+            for offset in range(-(bar_size // 2), bar_size // 2 + 1):
+                idx = center + offset
+                if 0 <= idx < num_leds:
+                    strip.setPixelColor(idx, Color(r, g, b_, w))
+
+    def detect_collisions(bouncers, num_leds):
+        for i, a in enumerate(bouncers):
+            for j, b in enumerate(bouncers):
+                if i != j:
+                    # Check for overlap in bar regions
+                    a_range = range(int(a['pos']) - bar_size // 2, int(a['pos']) + bar_size // 2 + 1)
+                    b_range = range(int(b['pos']) - bar_size // 2, int(b['pos']) + bar_size // 2 + 1)
+                    if set(a_range) & set(b_range):
+                        a['dir'] *= -1
+                        b['dir'] *= -1
+                        if change_color_on_bounce:
+                            a['color'] = get_random_color()
+                            b['color'] = get_random_color()
+
+    while time.perf_counter() - start_time < duration:
+        frame_start = time.perf_counter()
+
         clear(strip1)
         clear(strip2)
 
-        # Draw bars on strip1
-        for bouncer in bouncers1:
-            r, g, b = bouncer['color']
-            center = int(bouncer['pos'])
-            for offset in range(-(bar_size // 2), bar_size // 2 + 1):
-                pos = center + offset
-                if 0 <= pos < num_leds_1:
-                    strip1.setPixelColor(pos, Color(r, g, b))
-
-        # Draw bars on strip2
-        for bouncer in bouncers2:
-            r, g, b = bouncer['color']
-            center = int(bouncer['pos'])
-            for offset in range(-(bar_size // 2), bar_size // 2 + 1):
-                pos = center + offset
-                if 0 <= pos < num_leds_2:
-                    strip2.setPixelColor(pos, Color(r, g, b))
+        draw_bouncers(strip1, bouncers1, num_leds_1)
+        draw_bouncers(strip2, bouncers2, num_leds_2)
 
         strip1.show()
         strip2.show()
 
-        # Update positions and directions
-        for bouncer in bouncers1:
-            bouncer['pos'] += bouncer['dir']
-            if bouncer['pos'] >= num_leds_1 or bouncer['pos'] < 0:
-                bouncer['dir'] *= -1
-                bouncer['pos'] += bouncer['dir'] * 2
+        # Update positions
+        for b in bouncers1:
+            b['pos'] += b['dir']
+            if b['pos'] < 0:
+                b['pos'] = 0
+                b['dir'] = 1
                 if change_color_on_bounce:
-                    bouncer['color'] = get_random_color()
+                    b['color'] = get_random_color()
+            elif b['pos'] > num_leds_1 - 1:
+                b['pos'] = num_leds_1 - 1
+                b['dir'] = -1
+                if change_color_on_bounce:
+                    b['color'] = get_random_color()
 
         if independent:
-            for bouncer in bouncers2:
-                bouncer['pos'] += bouncer['dir']
-                if bouncer['pos'] >= num_leds_2 or bouncer['pos'] < 0:
-                    bouncer['dir'] *= -1
-                    bouncer['pos'] += bouncer['dir'] * 2
+            for b in bouncers2:
+                b['pos'] += b['dir']
+                if b['pos'] < 0:
+                    b['pos'] = 0
+                    b['dir'] = 1
                     if change_color_on_bounce:
-                        bouncer['color'] = get_random_color()
+                        b['color'] = get_random_color()
+                elif b['pos'] > num_leds_2 - 1:
+                    b['pos'] = num_leds_2 - 1
+                    b['dir'] = -1
+                    if change_color_on_bounce:
+                        b['color'] = get_random_color()
 
-        #time.sleep(speed)
+        detect_collisions(bouncers1, num_leds_1)
+        if independent:
+            detect_collisions(bouncers2, num_leds_2)
 
-    clear(strip1)
-    clear(strip2)
-    strip1.show()
-    strip2.show()
+        elapsed = time.perf_counter() - frame_start
+        if (sleep := delay - elapsed) > 0:
+            time.sleep(sleep)
+
+
 
 
 def blackout(strip):

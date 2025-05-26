@@ -28,15 +28,22 @@
         input[type=range] {
             width: 100%;
         }
-        .status {
-            margin-top: 20px;
-            font-weight: bold;
-            color: #0f0;
-        }
         .param-value {
             color: #ccc;
             font-size: 0.9em;
             margin-left: 10px;
+        }
+        .status {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            color: #0f0;
+            font-weight: bold;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            z-index: 1000;
         }
     </style>
 </head>
@@ -62,7 +69,8 @@
                 e.preventDefault();
                 const values = {};
                 for (const key in params) {
-                    values[key] = form.elements[key].valueAsNumber || form.elements[key].value;
+                    const val = form.elements[key].valueAsNumber;
+                    values[key] = isNaN(val) ? form.elements[key].value : val;
                 }
                 socket.emit("start_effect", { name, params: values });
             };
@@ -83,6 +91,7 @@
                 input.min = p.min;
                 input.max = p.max;
                 input.value = p.default;
+                input.step = p.step !== undefined ? p.step : 0.01;
                 input.style.width = "100%";
 
                 const valueDisplay = document.createElement("div");
