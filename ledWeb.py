@@ -124,6 +124,7 @@ def run_timer(duration=10, sparkle_chance=0.05):
     rainbow_with_sparkles(strip1, strip2, duration=duration, sparkle_chance=sparkle_chance)
 
 
+
 @register_effect("Union Jack Scroll Sparkle", params={"duration":         {"min": 1,   "max": 60,  "default": 10,   "step": 1},
                                                       "sparkle_chance":   {"min": 0.0, "max": 0.1, "default": 0.05, "step": 0.01},
                                                       "fade_steps":       {"min": 1,   "max": 20,  "default": 8,    "step": 1}}) 
@@ -177,10 +178,40 @@ def run_morse_band_scroll(text="Welcome to Garden Gaming Day", duration=10):
                       duration=duration, 
                       direction=1)
 
+
+
+
 @register_effect("Sinister Pulse", params={"duration": {"min": 1, "max": 600, "default": 20, "step": 1}})
 def run_sinister_pulse(duration: float = 20.0, fps: int = 30):
-    sinister_pulse(strip1, strip2, 
-                   duration=duration) 
+    sinister_pulse(strip1, strip2, duration=duration) 
+
+
+
+
+@register_effect("Blood Pulse", params={"duration": {"min": 1, "max": 600, "default": 20, "step": 1}, 
+                                        "speed": {"min": 1, "max": 100, "default": 20, "step": 1},
+                                        "bpm": {"min": 30, "max": 300, "default": 60, "step": 1},
+                                        "min_blob_len": {"min": 1,   "max": 10,  "default": 5,  "step": 1},
+                                        "max_blob_len": {"min": 10,  "max": 30,  "default": 15,  "step": 1},
+                                        "spawn_rate":   {"min": 0.1, "max": 1.0, "default": 1.0, "step": 0.1},
+                                        "pulse_depth":  {"min": 0.0, "max": 1.0, "default": 0.5, "step": 0.1}})
+def run_blood_pulse_effect(speed=20, bpm=60, pulse_depth=0.5, duration=10,min_blob_len=5, max_blob_len=15, spawn_rate=1.0 ):
+    blood_artery_effect(strip1, strip2,
+                       duration=duration,bpm=bpm, 
+                       speed=speed,
+                       pulse_depth=pulse_depth, 
+                       min_blob_len=min_blob_len, max_blob_len=max_blob_len, 
+                       spawn_rate=1.0)
+
+@register_effect("Theater Chase", params={"Red":        {"min": 0, "max": 255, "default": 255, "step": 1},
+                                          "Green":      {"min": 0, "max": 255, "default": 0, "step": 1},
+                                          "Blue":       {"min": 0, "max": 255, "default": 0,"step": 1},
+                                          "spacing":    {"min": 1, "max": 10, "default": 3, "step": 1},
+                                          "duration":   {"min": 1, "max": 60, "default": 10, "step": 1}})
+def run_theater_chase_effect(Red= 255, Green=0, Blue=0,
+                            spacing=3, duration=10, fps=30):
+    theater_chase_effect(strip1, strip2,
+                         color=(Red, Green, Blue), spacing=spacing, duration=duration, fps=fps)
 
 @register_effect("Blackout")
 def run_blackout():

@@ -1139,6 +1139,131 @@ def color_wave_brightness(strip1, strip2, duration=15, fps=60,
             time.sleep(sleep_time)
 
 
+def theater_chase_effect(strip_a, strip_b, color=(255, 0, 0),
+                         spacing=3, duration=10, fps=30):
+    """
+    Theater chase effect with processing overhead compensation.
+    """
+
+    num_pixels = strip_a.numPixels()
+    assert strip_b.numPixels() == num_pixels, "Strips must be the same length"
+
+    chase_color = Color(*color)
+    off_color = Color(0, 0, 0)
+
+    frame_duration = 1.0 / fps
+    start_time = time.time()
+    next_frame_time = start_time + frame_duration
+    offset = 0
+
+    while (time.time() - start_time) < duration:
+        # Draw current frame
+        for i in range(num_pixels):
+            if (i + offset) % spacing == 0:
+                strip_a.setPixelColor(i, chase_color)
+                strip_b.setPixelColor(i, chase_color)
+            else:
+                strip_a.setPixelColor(i, off_color)
+                strip_b.setPixelColor(i, off_color)
+
+        strip_a.show()
+        strip_b.show()
+
+        # Step offset for next frame
+        offset = (offset + 1) % spacing
+
+        # Time adjustment for consistent fps
+        sleep_time = next_frame_time - time.time()
+        if sleep_time > 0:
+            time.sleep(sleep_time)
+        next_frame_time += frame_duration
+
+
+def blood_artery_effect(strip_a, strip_b, speed=30, bpm=60, pulse_depth=0.3,
+                        min_blob_len=5, max_blob_len=15, spawn_rate=1.0,
+                        duration=10, fps=60):
+    """
+    Artery simulation with blood blobs and pulsing brightness.
+    """
+
+    def heartbeat_wave(t, bpm):
+        beat_time = 60.0 / bpm
+        t = t % beat_time
+        if t < 0.1 * beat_time:
+            return 1.0 - (t / (0.1 * beat_time))
+        elif t < 0.2 * beat_time:
+            return 0.5 - ((t - 0.1 * beat_time) / (0.1 * beat_time))
+        else:
+            return 0.2
+
+    num_pixels = strip_a.numPixels()
+    assert strip_b.numPixels() == num_pixels, "Strips must be same length"
+
+    base_color = (100, 0, 0)
+    blob_color = (255, 0, 0)
+    blobs = []  # List of (position, length)
+
+    frame_duration = 1.0 / fps
+    start_time = time.time()
+    next_frame_time = start_time + frame_duration
+    last_spawn_time = start_time
+
+    while (time.time() - start_time) < duration:
+        now = time.time()
+        elapsed = now - start_time
+
+        # Global pulse brightness
+        pulse = heartbeat_wave(elapsed, bpm)
+        pulse = 1.0 - pulse * pulse_depth
+
+        # Update blobs
+        updated_blobs = []
+        for pos, length in blobs:
+            new_pos = pos + speed * frame_duration
+            if new_pos - length < num_pixels:
+                updated_blobs.append((new_pos, length))
+        blobs = updated_blobs
+
+        # Spawn new blob
+        if now - last_spawn_time >= 1.0 / spawn_rate:
+            length = random.randint(min_blob_len, max_blob_len)
+            blobs.append((-length, length))  # Start off-screen
+            last_spawn_time = now
+
+        # Draw frame
+        for i in range(num_pixels):
+            # Start with pulsing artery base
+            red = int(base_color[0] * pulse)
+            pixel_color = red
+
+            # Check if in any blood blob
+            for pos, length in blobs:
+                if pos <= i < pos + length:
+                    # Brighter blob with fading edges
+                    rel = (i - pos) / length
+                    edge_fade = math.sin(math.pi * rel)
+                    red = int(blob_color[0] * edge_fade * pulse)
+                    pixel_color = max(pixel_color, red)
+                    break
+
+            color = Color(pixel_color, 0, 0)
+            strip_a.setPixelColor(i, color)
+            strip_b.setPixelColor(i, color)
+
+        strip_a.show()
+        strip_b.show()
+
+        # Maintain frame timing
+        sleep_time = next_frame_time - time.time()
+        if sleep_time > 0:
+            time.sleep(sleep_time)
+        next_frame_time += frame_duration
+
+
+
+
+
+
 def color_bounce(strip1, strip2, duration=15, num_bouncers=3, fps=60,
                  independent=False, change_color_on_bounce=True, bar_size=5):
     """
