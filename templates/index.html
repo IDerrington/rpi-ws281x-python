@@ -88,24 +88,24 @@
                 const input = document.createElement("input");
                 input.name = key;
                 input.type = "range";
-                input.min = p.min;
-                input.max = p.max;
-                input.value = p.default;
-                input.step = p.step !== undefined ? p.step : 0.01;
+                input.min = Number(p.min);
+                input.max = Number(p.max);
+                input.step = p.step !== undefined ? Number(p.step) : 0.01;
+                input.value = Number(p.default);  // ✅ Force correct number
                 input.style.width = "100%";
 
                 const valueDisplay = document.createElement("div");
                 valueDisplay.className = "param-value";
-                valueDisplay.textContent = `Value: ${p.default}`;
+                valueDisplay.textContent = `Value: ${input.value}`;
 
                 input.oninput = () => {
                     valueDisplay.textContent = `Value: ${input.value}`;
-                };
+            };
 
-                wrapper.appendChild(input);
-                wrapper.appendChild(valueDisplay);
-                form.appendChild(wrapper);
-            }
+    wrapper.appendChild(input);
+    wrapper.appendChild(valueDisplay);
+    form.appendChild(wrapper);
+}
 
             const submit = document.createElement("button");
             submit.type = "submit";

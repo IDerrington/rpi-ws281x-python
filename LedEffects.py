@@ -1179,44 +1179,57 @@ def theater_chase_effect(strip_a, strip_b, color=(255, 0, 0),
         next_frame_time += frame_duration
 
 
+import time
+import math
+from rpi_ws281x import Color
+
 def blood_artery_effect(strip_a, strip_b, speed=30, bpm=60, pulse_depth=0.3,
-                        min_blob_len=5, max_blob_len=15, spawn_rate=1.0,
+                        min_blob_len=5, max_blob_len=15,
                         duration=10, fps=60):
     """
-    Artery simulation with blood blobs and pulsing brightness.
+    Blood-in-artery effect with heartbeat-synced blobs and distinct visuals.
     """
 
     def heartbeat_wave(t, bpm):
+        """Returns 0–1 pulse strength based on heartbeat."""
         beat_time = 60.0 / bpm
         t = t % beat_time
         if t < 0.1 * beat_time:
-            return 1.0 - (t / (0.1 * beat_time))
+            return 1.0 - (t / (0.1 * beat_time))  # Quick up
         elif t < 0.2 * beat_time:
-            return 0.5 - ((t - 0.1 * beat_time) / (0.1 * beat_time))
+            return 0.5 - ((t - 0.1 * beat_time) / (0.1 * beat_time))  # Quick down
         else:
-            return 0.2
+            return 0.2  # Rest
 
     num_pixels = strip_a.numPixels()
     assert strip_b.numPixels() == num_pixels, "Strips must be same length"
 
     base_color = (100, 0, 0)
     blob_color = (255, 0, 0)
-    blobs = []  # List of (position, length)
+    blobs = []  # List of (pos, length)
 
     frame_duration = 1.0 / fps
     start_time = time.time()
     next_frame_time = start_time + frame_duration
-    last_spawn_time = start_time
+
+    beat_interval = 60.0 / bpm
+    next_beat_time = start_time
 
     while (time.time() - start_time) < duration:
         now = time.time()
         elapsed = now - start_time
 
-        # Global pulse brightness
+        # Global heartbeat pulse modulation
         pulse = heartbeat_wave(elapsed, bpm)
         pulse = 1.0 - pulse * pulse_depth
 
-        # Update blobs
+        # Spawn a blob at each heartbeat
+        if now >= next_beat_time:
+            blob_len = math.floor(min_blob_len + (max_blob_len - min_blob_len) * 0.5)
+            blobs.append((-blob_len, blob_len))  # Start off-screen
+            next_beat_time += beat_interval
+
+        # Update blobs' positions
         updated_blobs = []
         for pos, length in blobs:
             new_pos = pos + speed * frame_duration
@@ -1224,40 +1237,234 @@ def blood_artery_effect(strip_a, strip_b, speed=30, bpm=60, pulse_depth=0.3,
                 updated_blobs.append((new_pos, length))
         blobs = updated_blobs
 
-        # Spawn new blob
-        if now - last_spawn_time >= 1.0 / spawn_rate:
-            length = random.randint(min_blob_len, max_blob_len)
-            blobs.append((-length, length))  # Start off-screen
-            last_spawn_time = now
-
         # Draw frame
         for i in range(num_pixels):
             # Start with pulsing artery base
             red = int(base_color[0] * pulse)
-            pixel_color = red
 
-            # Check if in any blood blob
+            # Add any blob contribution
             for pos, length in blobs:
                 if pos <= i < pos + length:
-                    # Brighter blob with fading edges
                     rel = (i - pos) / length
-                    edge_fade = math.sin(math.pi * rel)
-                    red = int(blob_color[0] * edge_fade * pulse)
-                    pixel_color = max(pixel_color, red)
-                    break
+                    edge_fade = math.sin(math.pi * rel)  # Smooth bell shape
+                    blob_red = int(blob_color[0] * edge_fade * pulse)
+                    red = max(red, blob_red)
+                    break  # Only one blob per pixel
 
-            color = Color(pixel_color, 0, 0)
+            color = Color(red, 0, 0)
             strip_a.setPixelColor(i, color)
             strip_b.setPixelColor(i, color)
 
         strip_a.show()
         strip_b.show()
 
-        # Maintain frame timing
+        # Maintain frame timing with processing time accounted for
         sleep_time = next_frame_time - time.time()
         if sleep_time > 0:
             time.sleep(sleep_time)
         next_frame_time += frame_duration
+
+
+
+def starfield_effect(strip_a, strip_b,
+                     color=(255, 255, 255, 0),
+                     spawn_rate=10,
+                     speed=100,
+                     fade=0.9,
+                     duration=10,
+                     fps=60,
+                     direction=1):
+
+    num_leds = strip_a.numPixels()
+    frame_delay = 1.0 / fps
+    pixels = [(0, 0, 0, 0)] * num_leds
+    stars = []
+    spawn_interval = 1.0 / spawn_rate
+    last_spawn_time = time.time()
+    start_time = time.time()
+    next_frame_time = time.time()
+
+    while time.time() - start_time < duration:
+        frame_start = time.time()
+
+        # Fade all pixels
+        pixels = [tuple(int(c * fade) for c in px) for px in pixels]
+
+        # Spawn new stars
+        if frame_start - last_spawn_time >= spawn_interval:
+            pos = 0 if direction == 1 else num_leds - 1
+            stars.append({"pos": pos, "t": frame_start})
+            last_spawn_time = frame_start
+
+        # Move stars
+        now = frame_start
+        new_stars = []
+        for star in stars:
+            elapsed = now - star["t"]
+            move_px = int(elapsed * speed)
+            pos = star["pos"] + direction * move_px
+            if 0 <= pos < num_leds:
+                pixels[pos] = color
+                new_stars.append(star)
+        stars = new_stars
+
+        # Update strips
+        for i in range(num_leds):
+            strip_a.setPixelColor(i, Color(*pixels[i]))
+            strip_b.setPixelColor(i, Color(*pixels[i]))
+
+        strip_a.show()
+        strip_b.show()
+
+        # Frame pacing — subtract processing time
+        frame_end = time.time()
+        next_frame_time += frame_delay
+        sleep_time = next_frame_time - frame_end
+        if sleep_time > 0:
+            time.sleep(sleep_time)
+        else:
+            next_frame_time = time.time()  # reset if behind
+
+
+
+def aurora_effect(strip_a, strip_b,
+                  palette=[(0, 255, 100, 0), (0, 100, 255, 0), (100, 0, 255, 0)],
+                  speed=0.5,
+                  fade=0.9,
+                  duration=20,
+                  fps=60,
+                  scale=0.1,
+                  background_color=(0, 0, 0, 0)):
+    
+    def lerp_color(c1, c2, t):
+        return tuple(int(c1[i] * (1 - t) + c2[i] * t) for i in range(4))
+
+    def get_aurora_color(x, t, palette, scale): 
+        # Use sine to get a smooth blending factor
+        wave = 0.5 * (1 + math.sin(x * scale + t))
+        i = int(wave * (len(palette) - 1))
+        j = (i + 1) % len(palette)
+        blend_t = (wave * (len(palette) - 1)) % 1.0
+        return lerp_color(palette[i], palette[j], blend_t)
+
+    num_leds = strip_a.numPixels()
+    frame_delay = 1.0 / fps
+    pixels = [background_color] * num_leds
+    start_time = time.time()
+    next_frame_time = time.time()
+
+    while time.time() - start_time < duration:
+        frame_start = time.time()
+        t = (frame_start - start_time) * speed
+
+        # Fade existing pixels
+        pixels = [tuple(int(c * fade) for c in px) for px in pixels]
+
+        # Update colors using smooth wave functions
+        for i in range(num_leds):
+            color = get_aurora_color(i, t, palette, scale)
+            pixels[i] = tuple(min(255, max(p, c)) for p, c in zip(pixels[i], color))
+
+        # Output to strips
+        for i in range(num_leds):
+            strip_a.setPixelColor(i, Color(*pixels[i]))
+            strip_b.setPixelColor(i, Color(*pixels[i]))
+        strip_a.show()
+        strip_b.show()
+
+        # Frame timing
+        frame_end = time.time()
+        next_frame_time += frame_delay
+        sleep_time = next_frame_time - frame_end
+        if sleep_time > 0:
+            time.sleep(sleep_time)
+        else:
+            next_frame_time = time.time()
+
+
+def comet_effect(strip_a, strip_b,
+                 color=(255, 0, 0, 0),         # comet RGBW
+                 tail_length=20,
+                 speed=50,                    # pixels/sec
+                 fade_factor=0.6,
+                 duration=10,
+                 fps=60,
+                 direction=1,
+                 num_comets=1,
+                 min_spacing=30,
+                 background_color=(0, 0, 0, 0)):
+    """
+    RGBW comet effect with randomized spacing and background.
+
+    Args:
+        color: RGBW comet color
+        tail_length: Length of fading tail
+        speed: Movement speed in pixels/sec
+        fade_factor: Brightness decay factor [0-1]
+        duration: Duration in seconds
+        fps: Frames per second
+        direction: 1 = left to right, -1 = right to left
+        num_comets: Number of comets
+        min_spacing: Minimum spacing between comet start positions
+        background_color: RGBW background color (default off)
+    """
+    num_pixels = strip_a.numPixels()
+    assert strip_b.numPixels() == num_pixels, "Strip lengths must match"
+
+    if num_comets * min_spacing > num_pixels:
+        raise ValueError(f"Too many comets for spacing: {num_comets} × {min_spacing} > {num_pixels}")
+
+    frame_duration = 1.0 / fps
+    start_time = time.time()
+    next_frame_time = start_time + frame_duration
+
+    r_base, g_base, b_base, w_base = color
+    r_bg, g_bg, b_bg, w_bg = background_color
+    packed_bg = Color(r_bg, g_bg, b_bg, w_bg)
+
+    # Generate non-overlapping random start positions
+    taken = []
+    comet_offsets = []
+
+    while len(comet_offsets) < num_comets:
+        pos = random.randint(0, num_pixels - 1)
+        if all(abs(pos - other) >= min_spacing for other in taken):
+            comet_offsets.append(pos)
+            taken.append(pos)
+
+    while (time.time() - start_time) < duration:
+        # Fill background first
+        for i in range(num_pixels):
+            strip_a.setPixelColor(i, packed_bg)
+            strip_b.setPixelColor(i, packed_bg)
+
+        now = time.time()
+        elapsed = now - start_time
+
+        for offset in comet_offsets:
+            base_pos = offset + direction * speed * elapsed
+            head_pos = base_pos % (num_pixels + tail_length)
+
+            for t in range(tail_length):
+                pos = int(head_pos) - t * direction
+                if 0 <= pos < num_pixels:
+                    fade = fade_factor ** t
+                    r = int(r_base * fade)
+                    g = int(g_base * fade)
+                    b = int(b_base * fade)
+                    w = int(w_base * fade)
+                    packed = Color(r, g, b, w)
+                    strip_a.setPixelColor(pos, packed)
+                    strip_b.setPixelColor(pos, packed)
+
+        strip_a.show()
+        strip_b.show()
+
+        sleep_time = next_frame_time - time.time()
+        if sleep_time > 0:
+            time.sleep(sleep_time)
+        next_frame_time += frame_duration
+
 
 
 

@@ -193,15 +193,15 @@ def run_sinister_pulse(duration: float = 20.0, fps: int = 30):
                                         "bpm": {"min": 30, "max": 300, "default": 60, "step": 1},
                                         "min_blob_len": {"min": 1,   "max": 10,  "default": 5,  "step": 1},
                                         "max_blob_len": {"min": 10,  "max": 30,  "default": 15,  "step": 1},
-                                        "spawn_rate":   {"min": 0.1, "max": 1.0, "default": 1.0, "step": 0.1},
                                         "pulse_depth":  {"min": 0.0, "max": 1.0, "default": 0.5, "step": 0.1}})
 def run_blood_pulse_effect(speed=20, bpm=60, pulse_depth=0.5, duration=10,min_blob_len=5, max_blob_len=15, spawn_rate=1.0 ):
     blood_artery_effect(strip1, strip2,
                        duration=duration,bpm=bpm, 
                        speed=speed,
                        pulse_depth=pulse_depth, 
-                       min_blob_len=min_blob_len, max_blob_len=max_blob_len, 
-                       spawn_rate=1.0)
+                       min_blob_len=min_blob_len, 
+                       max_blob_len=max_blob_len)
+                       
 
 @register_effect("Theater Chase", params={"Red":        {"min": 0, "max": 255, "default": 255, "step": 1},
                                           "Green":      {"min": 0, "max": 255, "default": 0, "step": 1},
@@ -213,7 +213,83 @@ def run_theater_chase_effect(Red= 255, Green=0, Blue=0,
     theater_chase_effect(strip1, strip2,
                          color=(Red, Green, Blue), spacing=spacing, duration=duration, fps=fps)
 
-@register_effect("Blackout")
+
+
+@register_effect("Comet Effect", params={"red":          {"min": 0, "max": 255, "default": 255, "step": 1}, 
+                                         "green":        {"min": 0, "max": 255, "default": 20, "step": 1},
+                                         "blue":         {"min": 0, "max": 255, "default": 20, "step": 1},
+                                         "white":        {"min": 0, "max": 255, "default": 2555, "step": 1},
+                                         "tail_length":  {"min": 1, "max": 100, "default": 80, "step": 1},
+                                         "speed":        {"min": 1, "max": 100, "default": 100, "step": 1},
+                                         "fade_factor":  {"min": 0, "max": 1, "default": 0.8, "step": 0.01},
+                                         "duration":     {"min": 5, "max": 60, "default": 20,   "step": 1},
+                                         "direction" :   {"min" :-1, "max" : 1 , "default" : 1 , "step" : 1},
+                                         "num_comets":   {"min": 1, "max": 10, "default": 5, "step": 1},
+                                         "min_spacing":  {"min": 20, "max": 100, "default": 30, "step": 1}})
+def runcomet_effect(red=255, green=0, blue=0, white=0,
+                    tail_length=20,
+                    speed=50,       # pixels per second
+                    fade_factor=0.6,
+                    duration=10,
+                    fps=60,
+                    direction=1,
+                    num_comets=1,
+                    min_spacing=20):
+    
+    fade_factor = float(fade_factor)
+    
+    comet_effect(strip1, strip2,
+                 color=(red, green, blue, white),
+                 tail_length=tail_length,
+                 speed=speed,
+                 fade_factor=fade_factor,
+                 duration=duration,
+                 fps=fps,
+                 direction=direction,
+                 num_comets=num_comets,
+                 min_spacing=min_spacing,
+                 background_color=(0, 0, 5, 2))
+
+
+@register_effect("Starfield Effect", params={
+    "red":          {"min": 0, "max": 255, "default": 255, "step": 1},
+    "green":        {"min": 0, "max": 255, "default": 255, "step": 1},
+    "blue":         {"min": 0, "max": 255, "default": 255, "step": 1},
+    "white":        {"min": 0, "max": 255, "default": 0, "step": 1},
+    "spawn_rate":   {"min": 1, "max": 50, "default": 10, "step": 1},  # stars/sec
+    "speed":        {"min": 10, "max": 300, "default": 100, "step": 10},  # px/sec
+    "fade":         {"min": 0.7, "max": 1.0, "default": 0.9, "step": 0.01},
+    "duration":     {"min": 5, "max": 60, "default": 20, "step": 1},
+    "direction":    {"min": -1, "max": 1, "default": 1, "step": 1}
+})
+def run_starfield_effect(red=255, green=255, blue=255, white=0,
+                         spawn_rate=10, speed=100, fade=0.9,
+                         duration=20, fps=60, direction=1):
+    
+    starfield_effect(strip1, strip2,
+                     color=(red, green, blue, white),
+                     spawn_rate=spawn_rate,
+                     speed=speed,
+                     fade=fade,
+                     duration=duration,
+                     direction=direction)
+
+@register_effect("Aurora Effect", params={
+    "speed":          {"min": 0.01, "max": 1.0, "default": 1, "step": 0.01},
+    "fade":           {"min": 0.1, "max": 1.0, "default": 0.9, "step": 0.01},
+    "duration":       {"min": 5, "max": 60, "default": 20, "step": 1},
+    "scale":          {"min": 0.01, "max": 1.0, "default": 0.04, "step": 0.01}})
+def run_aurora_effect(  speed=0.5,
+                        fade=0.9,
+                        duration=20,
+                        scale=0.1):       
+    aurora_effect(strip1, strip2,
+                  speed=speed,
+                  fade=fade,
+                  duration=duration,
+                  scale=scale)             
+
+@register_effect("0 Blackout")
 def run_blackout():
     blackout(strip1)    
     blackout(strip2)                  
