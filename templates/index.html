@@ -6,6 +6,9 @@
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
     <style>
         body {
+           padding-top: 70px;  /* Adjust this to match your topbar height */
+        }
+        body {
             font-family: sans-serif;
             background: #111;
             color: #eee;
@@ -45,15 +48,66 @@
             box-sizing: border-box;
             z-index: 1000;
         }
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: #333;
+            color: #0f0;
+            padding: 12px 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar button {
+            background-color: #0f0;
+            color: #111;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9em;
+        }      
+
+        .topbar button:hover {
+            background-color: #0c0;
+        }
     </style>
 </head>
 <body>
+    <div class="topbar">
+    <span>🌈 Garden NeoPixel Controller</span>
+    <div>
+        <button id="play-default" onclick="socket.emit('play_file')">▶️ Play Default Sequence</button>
+        <button id="play-starwars">🌌 Play Star Wars</button>
+    </div>
+    </div
     <h1>NeoPixel Effects Controller</h1>
     <div id="effects"></div>
+   
     <div class="status" id="status">Status: Idle</div>
+    <audio id="starwars-audio" src="/static/audio/starwars.mp3"></audio>
+    
 
     <script>
         const socket = io();
+        const audio = document.getElementById("starwars-audio");
+
+        document.getElementById("play-starwars").addEventListener("click", () => {
+            socket.emit("play_starwars");
+            audio.currentTime = 0;
+            audio.play().catch(err => {
+                console.warn("Audio playback failed (probably blocked):", err);
+            });
+        });
 
         function createEffectForm(name, params) {
             const div = document.createElement("div");

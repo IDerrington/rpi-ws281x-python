@@ -1468,28 +1468,21 @@ def comet_effect(strip_a, strip_b,
 
 
 
-
-
-
 def color_bounce(strip1, strip2, duration=15, num_bouncers=3, fps=60,
                  independent=False, change_color_on_bounce=True, bar_size=5):
-    """
-    Color bars bounce off each other and the strip ends on two NeoPixel RGBW strips.
-
-    :param strip1: First NeoPixel strip object
-    :param strip2: Second NeoPixel strip object
-    :param duration: Total duration to run the effect (in seconds)
-    :param num_bouncers: Number of moving color bars
-    :param fps: Frames per second
-    :param independent: If True, use different bouncers for each strip
-    :param change_color_on_bounce: Change color on bounce
-    :param bar_size: Size of each color bar
-    """
     import time
     import random
+    import colorsys
 
-    def get_random_color():
-        return tuple(random.randint(100, 255) for _ in range(4))  # RGBW
+    def get_distinct_color(last_color=None):
+        # Ensure new color is visibly different (distance > threshold)
+        while True:
+            color = tuple(random.randint(80, 255) for _ in range(4))  # RGBW
+            if not last_color:
+                return color
+            diff = sum(abs(c1 - c2) for c1, c2 in zip(color, last_color))
+            if diff > 100:  # Tune this threshold if needed
+                return color
 
     def clear(strip):
         for i in range(strip.numPixels()):
@@ -1501,18 +1494,9 @@ def color_bounce(strip1, strip2, duration=15, num_bouncers=3, fps=60,
             {
                 'pos': spacing * (i + 1),
                 'dir': random.choice([-1, 1]),
-                'color': get_random_color()
+                'color': get_distinct_color()
             } for i in range(count)
         ]
-
-    num_leds_1 = strip1.numPixels()
-    num_leds_2 = strip2.numPixels()
-    delay = 1.0 / fps
-
-    bouncers1 = init_bouncers(num_leds_1, num_bouncers)
-    bouncers2 = init_bouncers(num_leds_2, num_bouncers) if independent else bouncers1
-
-    start_time = time.perf_counter()
 
     def draw_bouncers(strip, bouncers, num_leds):
         for b in bouncers:
@@ -1524,18 +1508,33 @@ def color_bounce(strip1, strip2, duration=15, num_bouncers=3, fps=60,
                     strip.setPixelColor(idx, Color(r, g, b_, w))
 
     def detect_collisions(bouncers, num_leds):
-        for i, a in enumerate(bouncers):
-            for j, b in enumerate(bouncers):
-                if i != j:
-                    # Check for overlap in bar regions
-                    a_range = range(int(a['pos']) - bar_size // 2, int(a['pos']) + bar_size // 2 + 1)
-                    b_range = range(int(b['pos']) - bar_size // 2, int(b['pos']) + bar_size // 2 + 1)
-                    if set(a_range) & set(b_range):
-                        a['dir'] *= -1
-                        b['dir'] *= -1
-                        if change_color_on_bounce:
-                            a['color'] = get_random_color()
-                            b['color'] = get_random_color()
+        collided = set()
+        for i in range(len(bouncers)):
+            a = bouncers[i]
+            a_range = set(range(int(a['pos']) - bar_size // 2, int(a['pos']) + bar_size // 2 + 1))
+            for j in range(i + 1, len(bouncers)):
+                if (i, j) in collided:
+                    continue
+                b = bouncers[j]
+                b_range = set(range(int(b['pos']) - bar_size // 2, int(b['pos']) + bar_size // 2 + 1))
+                if a_range & b_range:
+                    # Bounce both and assign distinct colors
+                    a['dir'] *= -1
+                    b['dir'] *= -1
+                    collided.add((i, j))
+                    if change_color_on_bounce:
+                        a['color'] = get_distinct_color(a['color'])
+                        b['color'] = get_distinct_color(b['color'])
+
+    # Main loop (unchanged except call updated functions)
+    num_leds_1 = strip1.numPixels()
+    num_leds_2 = strip2.numPixels()
+    delay = 1.0 / fps
+
+    bouncers1 = init_bouncers(num_leds_1, num_bouncers)
+    bouncers2 = init_bouncers(num_leds_2, num_bouncers) if independent else bouncers1
+
+    start_time = time.perf_counter()
 
     while time.perf_counter() - start_time < duration:
         frame_start = time.perf_counter()
@@ -1549,33 +1548,22 @@ def color_bounce(strip1, strip2, duration=15, num_bouncers=3, fps=60,
         strip1.show()
         strip2.show()
 
-        # Update positions
         for b in bouncers1:
             b['pos'] += b['dir']
-            if b['pos'] < 0:
-                b['pos'] = 0
-                b['dir'] = 1
+            if b['pos'] < 0 or b['pos'] > num_leds_1 - 1:
+                b['dir'] *= -1
+                b['pos'] = max(0, min(b['pos'], num_leds_1 - 1))
                 if change_color_on_bounce:
-                    b['color'] = get_random_color()
-            elif b['pos'] > num_leds_1 - 1:
-                b['pos'] = num_leds_1 - 1
-                b['dir'] = -1
-                if change_color_on_bounce:
-                    b['color'] = get_random_color()
+                    b['color'] = get_distinct_color(b['color'])
 
         if independent:
             for b in bouncers2:
                 b['pos'] += b['dir']
-                if b['pos'] < 0:
-                    b['pos'] = 0
-                    b['dir'] = 1
+                if b['pos'] < 0 or b['pos'] > num_leds_2 - 1:
+                    b['dir'] *= -1
+                    b['pos'] = max(0, min(b['pos'], num_leds_2 - 1))
                     if change_color_on_bounce:
-                        b['color'] = get_random_color()
-                elif b['pos'] > num_leds_2 - 1:
-                    b['pos'] = num_leds_2 - 1
-                    b['dir'] = -1
-                    if change_color_on_bounce:
-                        b['color'] = get_random_color()
+                        b['color'] = get_distinct_color(b['color'])
 
         detect_collisions(bouncers1, num_leds_1)
         if independent:
@@ -1584,6 +1572,7 @@ def color_bounce(strip1, strip2, duration=15, num_bouncers=3, fps=60,
         elapsed = time.perf_counter() - frame_start
         if (sleep := delay - elapsed) > 0:
             time.sleep(sleep)
+
 
 
 

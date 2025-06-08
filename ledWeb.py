@@ -2,6 +2,8 @@ from flask import Flask, render_template, request
 from flask_socketio import SocketIO, emit
 from flask_socketio import disconnect
 import threading
+import json
+import os
 
 from LedEffects import *  # Your custom effects like fireflies, matrix, etc.
 from rpi_ws281x import ws, Color, Adafruit_NeoPixel
@@ -120,7 +122,7 @@ def run_timer(duration=10, reverse=False):
 
 @register_effect("Rainbow With Sparkles", params={  "duration":              {"min": 1,  "max": 60, "default": 10, "step": 1}, 
                                                     "sparkle_chance":        {"min": 0.0, "max": 0.1, "default": 0.05, "step": 0.01}})                              
-def run_timer(duration=10, sparkle_chance=0.05):
+def run_rainbow_with_sparkles(duration=10, sparkle_chance=0.05):
     rainbow_with_sparkles(strip1, strip2, duration=duration, sparkle_chance=sparkle_chance)
 
 
@@ -218,7 +220,7 @@ def run_theater_chase_effect(Red= 255, Green=0, Blue=0,
 @register_effect("Comet Effect", params={"red":          {"min": 0, "max": 255, "default": 255, "step": 1}, 
                                          "green":        {"min": 0, "max": 255, "default": 20, "step": 1},
                                          "blue":         {"min": 0, "max": 255, "default": 20, "step": 1},
-                                         "white":        {"min": 0, "max": 255, "default": 2555, "step": 1},
+                                         "white":        {"min": 0, "max": 255, "default": 255, "step": 1},
                                          "tail_length":  {"min": 1, "max": 100, "default": 80, "step": 1},
                                          "speed":        {"min": 1, "max": 100, "default": 100, "step": 1},
                                          "fade_factor":  {"min": 0, "max": 1, "default": 0.8, "step": 0.01},
@@ -226,7 +228,7 @@ def run_theater_chase_effect(Red= 255, Green=0, Blue=0,
                                          "direction" :   {"min" :-1, "max" : 1 , "default" : 1 , "step" : 1},
                                          "num_comets":   {"min": 1, "max": 10, "default": 5, "step": 1},
                                          "min_spacing":  {"min": 20, "max": 100, "default": 30, "step": 1}})
-def runcomet_effect(red=255, green=0, blue=0, white=0,
+def run_comet_effect(red=255, green=0, blue=0, white=0,
                     tail_length=20,
                     speed=50,       # pixels per second
                     fade_factor=0.6,
@@ -292,7 +294,25 @@ def run_aurora_effect(  speed=0.5,
 @register_effect("0 Blackout")
 def run_blackout():
     blackout(strip1)    
-    blackout(strip2)                  
+    blackout(strip2)         
+
+def log_effect_run(effect_name, params, filename="effect_log.json"):
+    entry = {"name": effect_name, "params": params}
+    data = []
+
+    # Read existing log
+    if os.path.exists(filename):
+        with open(filename, "r") as f:
+            try:
+                data = json.load(f)
+            except json.JSONDecodeError:
+                pass  # Start fresh if corrupted
+
+    data.append(entry)
+
+    # Write updated log
+    with open(filename, "w") as f:
+        json.dump(data, f, indent=2)         
 
 @socketio.on('connect')
 def on_connect():
@@ -335,6 +355,8 @@ def start_effect(data):
 
     def run_effect():
         print(f"Running effect: {name} with params {params}")
+
+        log_effect_run(name, params)
         try:
             EFFECTS[name]["function"](**params)
         except Exception as e:
@@ -350,6 +372,60 @@ def start_effect(data):
     current_effect["name"] = name
     current_effect["thread"] = thread
     socketio.emit("status_update", {"status": f"Running {name}"})
+
+@socketio.on("play_file")
+def play_file():
+    
+    if current_effect["thread"] and current_effect["thread"].is_alive():
+        emit("status_update", {"status": "Busy — another effect is running"})
+        return
+    try:
+        with open("playback.json", "r") as f:
+            sequence = json.load(f)
+
+        def run_sequence():
+            for entry in sequence:
+                name = entry.get("name")
+                params = entry.get("params", {})
+                if name in EFFECTS:
+                    print(f"Playing effect from file: {name} with params {params}")
+                    socketio.emit("status_update", {"status": f"Running {name} from file"})
+                    EFFECTS[name]["function"](**params)
+            socketio.emit("status_update", {"status": "Idle"})
+
+        thread = threading.Thread(target=run_sequence)
+        thread.start()
+    except Exception as e:
+        print(f"Error loading or playing file: {e}")
+        socketio.emit("status_update", {"status": f"Error: {e}"})
+
+@socketio.on("play_starwars")
+def play_starwars():
+    if current_effect["thread"] and current_effect["thread"].is_alive():
+        emit("status_update", {"status": "Busy — another effect is running"})
+        return
+    try:
+        with open("starwars_playback.json", "r") as f:
+            sequence = json.load(f)
+
+        def run_sequence():
+            for entry in sequence:
+                name = entry.get("name")
+                params = entry.get("params", {})
+                if name in EFFECTS:
+                    print(f"Playing Star Wars effect: {name} with params {params}")
+                    socketio.emit("status_update", {"status": f"Running {name} (Star Wars)"})
+                    EFFECTS[name]["function"](**params)
+            socketio.emit("status_update", {"status": "Idle"})
+
+        thread = threading.Thread(target=run_sequence)
+        thread.start()
+
+    except Exception as e:
+        print(f"Error playing Star Wars file: {e}")
+        socketio.emit("status_update", {"status": f"Error: {e}"})
+
+ 
 
 
 if __name__ == "__main__":
