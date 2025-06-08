@@ -17,7 +17,7 @@ LED_1_COUNT = 600
 LED_1_PIN = 18
 LED_1_FREQ_HZ = 800000
 LED_1_DMA = 10
-LED_1_BRIGHTNESS = 200
+LED_1_BRIGHTNESS = 50
 LED_1_INVERT = False
 LED_1_CHANNEL = 0
 LED_1_STRIP = ws.SK6812_STRIP_GRBW
@@ -26,7 +26,7 @@ LED_2_COUNT = 600
 LED_2_PIN = 13
 LED_2_FREQ_HZ = 800000
 LED_2_DMA = 9
-LED_2_BRIGHTNESS = 200
+LED_2_BRIGHTNESS = 50
 LED_2_INVERT = False
 LED_2_CHANNEL = 1
 LED_2_STRIP = ws.SK6812_STRIP_GRBW
@@ -96,9 +96,9 @@ def run_fireflies(duration=15,
 
 
 
-@register_effect("Fire Effect", params={"duration":       {"min": 5, "max": 60, "default": 10, "step": 1},
+@register_effect("Fire Effect", params={"duration":     {"min": 5, "max": 60, "default": 10, "step": 1},
                                         "cooling":      {"min": 1, "max": 100, "default": 55,  "step": 1},
-                                        "sparking":      {"min": 1, "max": 255, "default": 120, "step": 1}})
+                                        "sparking":     {"min": 1, "max": 255, "default": 120, "step": 1}})
 def run_fire_effect(duration=10.0, cooling=55, sparking=120):
     fire_effect(strip1, strip2, 
                 duration=duration, 
@@ -172,7 +172,6 @@ def run_color_wave_brightness(duration=15,
 
 
 
-
 @register_effect("Morse Band Scroll", params={"duration": {"min": 1, "max": 60, "default": 10, "step": 1}})                        
 def run_morse_band_scroll(text="Welcome to Garden Gaming Day", duration=10):
     morse_band_scroll(strip1, strip2, 
@@ -186,7 +185,6 @@ def run_morse_band_scroll(text="Welcome to Garden Gaming Day", duration=10):
 @register_effect("Sinister Pulse", params={"duration": {"min": 1, "max": 600, "default": 20, "step": 1}})
 def run_sinister_pulse(duration: float = 20.0, fps: int = 30):
     sinister_pulse(strip1, strip2, duration=duration) 
-
 
 
 
@@ -204,6 +202,7 @@ def run_blood_pulse_effect(speed=20, bpm=60, pulse_depth=0.5, duration=10,min_bl
                        min_blob_len=min_blob_len, 
                        max_blob_len=max_blob_len)
                        
+
 
 @register_effect("Theater Chase", params={"Red":        {"min": 0, "max": 255, "default": 255, "step": 1},
                                           "Green":      {"min": 0, "max": 255, "default": 0, "step": 1},
