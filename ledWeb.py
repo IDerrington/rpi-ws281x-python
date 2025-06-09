@@ -288,7 +288,11 @@ def run_aurora_effect(  speed=0.5,
                   speed=speed,
                   fade=fade,
                   duration=duration,
-                  scale=scale)             
+                  scale=scale)       
+
+@register_effect("CE3K Signal", params={"note_delay": {"min": 0.1, "max": 2.0, "default": 0.8, "step": 0.1}})
+def run_ce3k_signal(note_delay=0.8):
+    ce3k_signal(strip1, strip2, note_delay=note_delay)      
 
 @register_effect("0 Blackout")
 def run_blackout():

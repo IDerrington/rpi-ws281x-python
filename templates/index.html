@@ -6,9 +6,7 @@
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
     <style>
         body {
-           padding-top: 70px;  /* Adjust this to match your topbar height */
-        }
-        body {
+            padding-top: 70px;
             font-family: sans-serif;
             background: #111;
             color: #eee;
@@ -48,7 +46,6 @@
             box-sizing: border-box;
             z-index: 1000;
         }
-
         .topbar {
             position: fixed;
             top: 0;
@@ -65,7 +62,6 @@
             justify-content: space-between;
             align-items: center;
         }
-
         .topbar button {
             background-color: #0f0;
             color: #111;
@@ -75,8 +71,7 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 0.9em;
-        }      
-
+        }
         .topbar button:hover {
             background-color: #0c0;
         }
@@ -84,28 +79,48 @@
 </head>
 <body>
     <div class="topbar">
-    <span>🌈 Garden NeoPixel Controller</span>
-    <div>
-        <button id="play-default" onclick="socket.emit('play_file')">▶️ Play Default Sequence</button>
-        <button id="play-starwars">🌌 Play Star Wars</button>
+        <span>🌈 Garden NeoPixel Controller</span>
+        <div>
+            <button id="play-default">▶️ Play Default Sequence</button>
+            <button id="play-starwars">🌌 Play Star Wars</button>
+            <button id="play-ce3k">👽 Play CE3K Signal</button>
+        </div>
     </div>
-    </div
+
     <h1>NeoPixel Effects Controller</h1>
     <div id="effects"></div>
-   
     <div class="status" id="status">Status: Idle</div>
+
     <audio id="starwars-audio" src="/static/audio/starwars.mp3"></audio>
-    
+    <audio id="ce3kAudio" src="/static/audio/ce3k_signal.mp3"></audio>
 
     <script>
         const socket = io();
         const audio = document.getElementById("starwars-audio");
+        const ce3kAudio = document.getElementById("ce3kAudio");
+
+        document.getElementById("play-default").addEventListener("click", () => {
+            socket.emit("play_file");
+        });
 
         document.getElementById("play-starwars").addEventListener("click", () => {
             socket.emit("play_starwars");
             audio.currentTime = 0;
             audio.play().catch(err => {
                 console.warn("Audio playback failed (probably blocked):", err);
+            });
+        });
+
+        document.getElementById("play-ce3k").addEventListener("click", () => {
+            ce3kAudio.currentTime = 0;
+
+            socket.emit("start_effect", {
+                    name: "CE3K Signal",
+                    params: { note_delay: 0.8 }
+            });
+            
+            ce3kAudio.play().catch(err => {
+                console.warn("CE3K audio failed:", err);
             });
         });
 
@@ -145,7 +160,7 @@
                 input.min = Number(p.min);
                 input.max = Number(p.max);
                 input.step = p.step !== undefined ? Number(p.step) : 0.01;
-                input.value = Number(p.default);  // ✅ Force correct number
+                input.value = Number(p.default);
                 input.style.width = "100%";
 
                 const valueDisplay = document.createElement("div");
@@ -154,12 +169,12 @@
 
                 input.oninput = () => {
                     valueDisplay.textContent = `Value: ${input.value}`;
-            };
+                };
 
-    wrapper.appendChild(input);
-    wrapper.appendChild(valueDisplay);
-    form.appendChild(wrapper);
-}
+                wrapper.appendChild(input);
+                wrapper.appendChild(valueDisplay);
+                form.appendChild(wrapper);
+            }
 
             const submit = document.createElement("button");
             submit.type = "submit";
@@ -184,7 +199,6 @@
             document.getElementById("status").textContent = `Status: ${data.status}`;
             const running = data.status.toLowerCase().startsWith("running");
             const forms = document.querySelectorAll(".effect-form");
-
             forms.forEach(form => {
                 Array.from(form.elements).forEach(el => {
                     el.disabled = running;

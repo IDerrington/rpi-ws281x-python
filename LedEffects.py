@@ -170,7 +170,31 @@ def morse_band_scroll(strip1, strip2, text, duration=10, direction=1, fps=30):
         if sleep_time > 0:
             time.sleep(sleep_time)
 
+def ce3k_signal(strip1, strip2, note_delay=0.8):
+    import time
+    notes = [
+        {"start": 0,   "end": 120, "color": (0, 0, 255, 0)},       # D
+        {"start": 120, "end": 240, "color": (0, 255, 0, 0)},       # E
+        {"start": 240, "end": 360, "color": (255, 0, 0, 0)},       # C
+        {"start": 360, "end": 480, "color": (255, 128, 0, 0)},     # C (again)
+        {"start": 480, "end": 600, "color": (255, 255, 255, 255)}  # G
+    ]
 
+    for note in notes:
+        blackout(strip1)
+        blackout(strip2)
+
+        for i in range(note["start"], note["end"]):
+            strip1.setPixelColor(i, Color(*note["color"]))
+            strip2.setPixelColor(i, Color(*note["color"]))
+        
+        strip1.show()
+        strip2.show()
+        time.sleep(note_delay)
+
+    # End with blackout
+    blackout(strip1)
+    blackout(strip2)
 
 def mirror_bounce(stripA, stripB=None, color=(0, 0, 255, 0), duration=10):
     """
