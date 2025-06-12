@@ -1,0 +1,107 @@
+[
+  {
+    "name": "Aurora Effect",
+    "params": {
+      "speed": 0.2,
+      "fade": 0.85,
+      "scale": 0.05
+    }
+  },
+  {
+    "name": "Color Bounce",
+    "params": {
+      "duration": 15,
+      "num_bouncers": 8,
+      "independent": 1,
+      "change_color_on_bounce": 1,
+      "bar_size": 4
+    }
+  },
+  {
+    "name": "Matrix",
+    "params": {
+      "duration": 10
+    }
+  },
+  {
+    "name": "Blood Pulse",
+    "params": {
+      "duration": 25,
+      "speed": 30,
+      "bpm": 120,
+      "min_blob_len": 6,
+      "max_blob_len": 18,
+      "pulse_depth": 0.7
+    }
+  },
+  {
+    "name": "Starfield Effect",
+    "params": {
+      "duration": 15,
+      "spawn_rate": 12,
+      "speed": 150,
+      "fade": 0.88,
+      "red": 255,
+      "green": 100,
+      "blue": 100,
+      "white": 0
+    }
+  },
+  {
+    "name": "Union Jack Scroll Sparkle",
+    "params": {
+      "duration": 10,
+      "sparkle_chance": 0.07,
+      "fade_steps": 10
+    }
+  },
+  {
+    "name": "CE3K Signal",
+    "params": {
+      "note_delay": 0.6
+    }
+  },
+  {
+    "name": "Rainbow With Sparkles",
+    "params": {
+      "duration": 15,
+      "sparkle_chance": 0.08
+    }
+  },
+  {
+    "name": "Fire Effect",
+    "params": {
+      "duration": 12,
+      "cooling": 60,
+      "sparking": 150
+    }
+  },
+  {
+    "name": "Color Wave Brightness",
+    "params": {
+      "duration": 20,
+      "wave_speed": 0.3,
+      "wave_frequency": 2.5
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "duration": 20,
+      "speed": 80,
+      "fade_factor": 0.75,
+      "direction": -1,
+      "num_comets": 4,
+      "min_spacing": 25,
+      "red": 50,
+      "green": 0,
+      "blue": 255,
+      "white": 80,
+      "tail_length": 50
+    }
+  },
+  {
+    "name": "0 Blackout",
+    "params": {}
+  }
+]

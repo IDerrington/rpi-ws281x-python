@@ -71,6 +71,7 @@
             cursor: pointer;
             font-weight: bold;
             font-size: 0.9em;
+            margin-left: 8px;
         }
         .topbar button:hover {
             background-color: #0c0;
@@ -84,6 +85,8 @@
             <button id="play-default">▶️ Play Default Sequence</button>
             <button id="play-starwars">🌌 Play Star Wars</button>
             <button id="play-ce3k">👽 Play CE3K Signal</button>
+            <button id="play-loserbaby">🎤 Play Loserbaby</button>
+            <button id="play-champions">🎤 Play Champions</button>
         </div>
     </div>
 
@@ -93,11 +96,23 @@
 
     <audio id="starwars-audio" src="/static/audio/starwars.mp3"></audio>
     <audio id="ce3kAudio" src="/static/audio/ce3k_signal.mp3"></audio>
+    <audio id="loserbabyAudio" src="/static/audio/Loserbaby.mp3"></audio>
+    <audio id="championsAudio" src="/static/audio/We Are The Champions.mp3"></audio>
 
     <script>
         const socket = io();
         const audio = document.getElementById("starwars-audio");
         const ce3kAudio = document.getElementById("ce3kAudio");
+        const loserbabyAudio = document.getElementById("loserbabyAudio");
+        const championsAudio = document.getElementById("championsAudio");
+
+document.getElementById("play-champions").addEventListener("click", () => {
+    socket.emit("play_champions");
+    championsAudio.currentTime = 0;
+    championsAudio.play().catch(err => {
+        console.warn("Champions audio playback failed:", err);
+    });
+});
 
         document.getElementById("play-default").addEventListener("click", () => {
             socket.emit("play_file");
@@ -113,16 +128,22 @@
 
         document.getElementById("play-ce3k").addEventListener("click", () => {
             ce3kAudio.currentTime = 0;
-
             socket.emit("start_effect", {
-                    name: "CE3K Signal",
-                    params: { note_delay: 0.8 }
+                name: "CE3K Signal",
+                params: { note_delay: 0.8 }
             });
-            
             ce3kAudio.play().catch(err => {
                 console.warn("CE3K audio failed:", err);
             });
         });
+
+       document.getElementById("play-loserbaby").addEventListener("click", () => {
+    socket.emit("play_loserbaby");
+    loserbabyAudio.currentTime = 0;
+    loserbabyAudio.play().catch(err => {
+        console.warn("Loserbaby audio playback failed:", err);
+    });
+});
 
         function createEffectForm(name, params) {
             const div = document.createElement("div");

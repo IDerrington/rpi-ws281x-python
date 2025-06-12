@@ -17,7 +17,7 @@ LED_1_COUNT = 600
 LED_1_PIN = 18
 LED_1_FREQ_HZ = 800000
 LED_1_DMA = 10
-LED_1_BRIGHTNESS = 50
+LED_1_BRIGHTNESS = 200
 LED_1_INVERT = False
 LED_1_CHANNEL = 0
 LED_1_STRIP = ws.SK6812_STRIP_GRBW
@@ -26,7 +26,7 @@ LED_2_COUNT = 600
 LED_2_PIN = 13
 LED_2_FREQ_HZ = 800000
 LED_2_DMA = 9
-LED_2_BRIGHTNESS = 50
+LED_2_BRIGHTNESS = 200
 LED_2_INVERT = False
 LED_2_CHANNEL = 1
 LED_2_STRIP = ws.SK6812_STRIP_GRBW
@@ -376,6 +376,8 @@ def start_effect(data):
     current_effect["thread"] = thread
     socketio.emit("status_update", {"status": f"Running {name}"})
 
+
+
 @socketio.on("play_file")
 def play_file():
     
@@ -401,6 +403,33 @@ def play_file():
     except Exception as e:
         print(f"Error loading or playing file: {e}")
         socketio.emit("status_update", {"status": f"Error: {e}"})
+
+import threading, json
+
+@socketio.on("play_loserbaby")
+def play_loserbaby():
+    try:
+        with open("loserbaby_playback.json", "r") as f:
+            sequence = json.load(f)
+    except Exception as e:
+        print(f"Error loading Loserbaby JSON: {e}")
+        socketio.emit("status_update", {"status": f"Error: {e}"})
+        return
+
+    def run_sequence():
+        for entry in sequence:
+            name = entry.get("name")
+            params = entry.get("params", {})
+            if name in EFFECTS:
+                socketio.emit("status_update", {"status": f"Running {name} (Loserbaby)"})
+                try:
+                    EFFECTS[name]["function"](**params)
+                except Exception as e:
+                    print(f"Error in {name}: {e}")
+        socketio.emit("status_update", {"status": "Idle"})
+
+    threading.Thread(target=run_sequence).start()
+
 
 @socketio.on("play_starwars")
 def play_starwars():
@@ -428,7 +457,31 @@ def play_starwars():
         print(f"Error playing Star Wars file: {e}")
         socketio.emit("status_update", {"status": f"Error: {e}"})
 
- 
+
+@socketio.on("play_champions")
+def play_champions():
+    if current_effect["thread"] and current_effect["thread"].is_alive():
+        emit("status_update", {"status": "Busy — another effect is running"})
+        return
+    try:
+        with open("we_are_the_champions_playback.json", "r") as f:
+            sequence = json.load(f)
+
+        def run_sequence():
+            for entry in sequence:
+                name = entry.get("name")
+                params = entry.get("params", {})
+                if name in EFFECTS:
+                    socketio.emit("status_update", {"status": f"Running {name} (Champions)"})
+                    EFFECTS[name]["function"](**params)
+            socketio.emit("status_update", {"status": "Idle"})
+
+        thread = threading.Thread(target=run_sequence)
+        current_effect["thread"] = thread
+        thread.start()
+    except Exception as e:
+        print(f"Error playing Champions file: {e}")
+        socketio.emit("status_update", {"status": f"Error: {e}"}) 
 
 
 if __name__ == "__main__":

@@ -1,0 +1,110 @@
+[
+  {
+    "time": 12.0,
+    "name": "Blood Pulse",
+    "params": {
+      "duration": 10,
+      "speed": 20,
+      "bpm": 60,
+      "pulse_depth": 0.5,
+      "min_blob_len": 5,
+      "max_blob_len": 15
+    }
+  },
+  {
+    "time": 30.0,
+    "name": "Matrix",
+    "params": {
+      "duration": 15
+    }
+  },
+  {
+    "time": 48.0,
+    "name": "Fireflies",
+    "params": {
+      "duration": 15,
+      "max_fireflies": 25
+    }
+  },
+  {
+    "time": 67.0,
+    "name": "Aurora Effect",
+    "params": {
+      "duration": 20,
+      "speed": 0.3,
+      "fade": 0.8,
+      "scale": 0.08
+    }
+  },
+  {
+    "time": 85.0,
+    "name": "Starfield Effect",
+    "params": {
+      "duration": 20,
+      "red": 255,
+      "green": 255,
+      "blue": 255,
+      "white": 0,
+      "spawn_rate": 15,
+      "speed": 100,
+      "fade": 0.9,
+      "direction": 1
+    }
+  },
+  {
+    "time": 105.0,
+    "name": "Rainbow With Sparkles",
+    "params": {
+      "duration": 10,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "time": 122.0,
+    "name": "Comet Effect",
+    "params": {
+      "duration": 10,
+      "red": 255,
+      "green": 20,
+      "blue": 20,
+      "white": 60,
+      "tail_length": 60,
+      "speed": 50,
+      "fade_factor": 0.8,
+      "direction": 1,
+      "num_comets": 3,
+      "min_spacing": 40
+    }
+  },
+  {
+    "time": 138.0,
+    "name": "Color Wave Brightness",
+    "params": {
+      "duration": 10,
+      "wave_speed": 0.3,
+      "wave_frequency": 2.5
+    }
+  },
+  {
+    "time": 155.0,
+    "name": "Mirror Bounce",
+    "params": {
+      "duration": 10,
+      "red": 255,
+      "green": 100,
+      "blue": 0,
+      "white": 0
+    }
+  },
+  {
+    "time": 172.0,
+    "name": "Color Bounce",
+    "params": {
+      "duration": 10,
+      "num_bouncers": 5,
+      "independent": 1,
+      "change_color_on_bounce": 1,
+      "bar_size": 6
+    }
+  }
+]

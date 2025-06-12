@@ -180,7 +180,7 @@ def ce3k_signal(strip1, strip2, note_delay=0.8):
         {"start": 480, "end": 600, "color": (255, 255, 255, 255)}  # G
     ]
 
-    for note in notes:
+    for note in notes: 
         blackout(strip1)
         blackout(strip2)
 
