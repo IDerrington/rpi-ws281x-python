@@ -6,14 +6,19 @@
     <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
     <style>
         body {
-            padding-top: 70px;
-            font-family: sans-serif;
-            background: #111;
-            color: #eee;
-            padding: 20px;
-            margin: 0;
-            overflow-x: hidden;
-        }
+    margin: 0;
+    font-family: sans-serif;
+    background: #111;
+    color: #eee;
+    overflow-x: hidden;
+    }
+
+.main-content {
+    padding-top: 100px; /* Add enough spacing below the topbar */
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
         .effect {
             margin: 20px 0;
             padding: 10px;
@@ -79,20 +84,22 @@
     </style>
 </head>
 <body>
-    <div class="topbar">
-        <span>🌈 Garden NeoPixel Controller</span>
-        <div>
-            <button id="play-default">▶️ Play Default Sequence</button>
-            <button id="play-starwars">🌌 Play Star Wars</button>
-            <button id="play-ce3k">👽 Play CE3K Signal</button>
-            <button id="play-loserbaby">🎤 Play Loserbaby</button>
-            <button id="play-champions">🎤 Play Champions</button>
-        </div>
+      <div class="topbar">
+    <span>🌈 Garden NeoPixel Controller</span>
+    <div>
+      <button id="play-default">▶️ Play Default Sequence</button>
+      <button id="play-starwars">🌌 Play Star Wars</button>
+      <button id="play-ce3k">👽 Play CE3K Signal</button>
+      <button id="play-loserbaby">🎤 Play Loserbaby</button>
+      <button id="play-champions">🎤 Play Champions</button>
     </div>
+  </div>
 
+  <div class="main-content">
     <h1>NeoPixel Effects Controller</h1>
     <div id="effects"></div>
     <div class="status" id="status">Status: Idle</div>
+  </div>
 
     <audio id="starwars-audio" src="/static/audio/starwars.mp3"></audio>
     <audio id="ce3kAudio" src="/static/audio/ce3k_signal.mp3"></audio>
