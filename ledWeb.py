@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request
+#from scheduler import start_scheduler
 from flask_socketio import SocketIO, emit
 from flask_socketio import disconnect
 import threading
@@ -483,6 +484,7 @@ def play_champions():
         print(f"Error playing Champions file: {e}")
         socketio.emit("status_update", {"status": f"Error: {e}"}) 
 
+# start_scheduler()  # ⬅ Start the background job scheduler
 
 if __name__ == "__main__":
     strip1.begin()

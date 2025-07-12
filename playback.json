@@ -220,6 +220,1326 @@
     }
   },
   {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": -1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+
+    {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 15,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 0
+    }
+  },
+{
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 0,
+      "Red": 255,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 255,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Aurora Effect",
+    "params": {
+      "duration": 5,
+      "fade": 0.9,
+      "scale": 0.04,
+      "speed": 1
+    }
+  },
+  {
+    "name": "Blood Pulse",
+    "params": {
+      "bpm": 69,
+      "duration": 1,
+      "max_blob_len": 15,
+      "min_blob_len": 5,
+      "pulse_depth": 0.5,
+      "speed": 20
+    }
+  },
+  {
+    "name": "Color Bounce",
+    "params": {
+      "bar_size": 5,
+      "change_color_on_bounce": 1,
+      "duration": 5,
+      "independent": 0,
+      "num_bouncers": 5
+    }
+  },
+  {
+    "name": "Color Wave Brightness",
+    "params": {
+      "duration": 5,
+      "wave_frequency": 2,
+      "wave_speed": 0.2
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Dual Sparkle Effect",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkles_per_frame": 5
+    }
+  },
+  {
+    "name": "Fire Effect",
+    "params": {
+      "cooling": 55,
+      "duration": 5,
+      "sparking": 120
+    }
+  },
+  {
+    "name": "Fireflies",
+    "params": {
+      "duration": 5,
+      "max_fireflies": 20
+    }
+  },
+  {
+    "name": "Flash",
+    "params": {
+      "delay": 0.51,
+      "flashes": 1
+    }
+  },
+  {
+    "name": "Matrix",
+    "params": {
+      "duration": 5
+    }
+  },
+  {
+    "name": "Mirror Bounce",
+    "params": {
+      "blue": 0,
+      "duration": 5,
+      "green": 0,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Morse Band Scroll",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Rainbow With Sparkles",
+    "params": {
+      "duration": 1,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Sinister Pulse",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Starfield Effect",
+    "params": {
+      "blue": 255,
+      "direction": 1,
+      "duration": 5,
+      "fade": 0.9,
+      "green": 255,
+      "red": 255,
+      "spawn_rate": 10,
+      "speed": 100,
+      "white": 0
+    }
+  },
+  {
+    "name": "Union Jack Scroll Sparkle",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": -1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+
+    {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 15,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 0
+    }
+  },
+{
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 0,
+      "Red": 255,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 255,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Aurora Effect",
+    "params": {
+      "duration": 5,
+      "fade": 0.9,
+      "scale": 0.04,
+      "speed": 1
+    }
+  },
+  {
+    "name": "Blood Pulse",
+    "params": {
+      "bpm": 69,
+      "duration": 1,
+      "max_blob_len": 15,
+      "min_blob_len": 5,
+      "pulse_depth": 0.5,
+      "speed": 20
+    }
+  },
+  {
+    "name": "Color Bounce",
+    "params": {
+      "bar_size": 5,
+      "change_color_on_bounce": 1,
+      "duration": 5,
+      "independent": 0,
+      "num_bouncers": 5
+    }
+  },
+  {
+    "name": "Color Wave Brightness",
+    "params": {
+      "duration": 5,
+      "wave_frequency": 2,
+      "wave_speed": 0.2
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Dual Sparkle Effect",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkles_per_frame": 5
+    }
+  },
+  {
+    "name": "Fire Effect",
+    "params": {
+      "cooling": 55,
+      "duration": 5,
+      "sparking": 120
+    }
+  },
+  {
+    "name": "Fireflies",
+    "params": {
+      "duration": 5,
+      "max_fireflies": 20
+    }
+  },
+  {
+    "name": "Flash",
+    "params": {
+      "delay": 0.51,
+      "flashes": 1
+    }
+  },
+  {
+    "name": "Matrix",
+    "params": {
+      "duration": 5
+    }
+  },
+  {
+    "name": "Mirror Bounce",
+    "params": {
+      "blue": 0,
+      "duration": 5,
+      "green": 0,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Morse Band Scroll",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Rainbow With Sparkles",
+    "params": {
+      "duration": 1,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Sinister Pulse",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Starfield Effect",
+    "params": {
+      "blue": 255,
+      "direction": 1,
+      "duration": 5,
+      "fade": 0.9,
+      "green": 255,
+      "red": 255,
+      "spawn_rate": 10,
+      "speed": 100,
+      "white": 0
+    }
+  },
+  {
+    "name": "Union Jack Scroll Sparkle",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": -1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+
+    {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 15,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 0
+    }
+  },
+{
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 0,
+      "Red": 255,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 255,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Aurora Effect",
+    "params": {
+      "duration": 5,
+      "fade": 0.9,
+      "scale": 0.04,
+      "speed": 1
+    }
+  },
+  {
+    "name": "Blood Pulse",
+    "params": {
+      "bpm": 69,
+      "duration": 1,
+      "max_blob_len": 15,
+      "min_blob_len": 5,
+      "pulse_depth": 0.5,
+      "speed": 20
+    }
+  },
+  {
+    "name": "Color Bounce",
+    "params": {
+      "bar_size": 5,
+      "change_color_on_bounce": 1,
+      "duration": 5,
+      "independent": 0,
+      "num_bouncers": 5
+    }
+  },
+  {
+    "name": "Color Wave Brightness",
+    "params": {
+      "duration": 5,
+      "wave_frequency": 2,
+      "wave_speed": 0.2
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Dual Sparkle Effect",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkles_per_frame": 5
+    }
+  },
+  {
+    "name": "Fire Effect",
+    "params": {
+      "cooling": 55,
+      "duration": 5,
+      "sparking": 120
+    }
+  },
+  {
+    "name": "Fireflies",
+    "params": {
+      "duration": 5,
+      "max_fireflies": 20
+    }
+  },
+  {
+    "name": "Flash",
+    "params": {
+      "delay": 0.51,
+      "flashes": 1
+    }
+  },
+  {
+    "name": "Matrix",
+    "params": {
+      "duration": 5
+    }
+  },
+  {
+    "name": "Mirror Bounce",
+    "params": {
+      "blue": 0,
+      "duration": 5,
+      "green": 0,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Morse Band Scroll",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Rainbow With Sparkles",
+    "params": {
+      "duration": 1,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Sinister Pulse",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Starfield Effect",
+    "params": {
+      "blue": 255,
+      "direction": 1,
+      "duration": 5,
+      "fade": 0.9,
+      "green": 255,
+      "red": 255,
+      "spawn_rate": 10,
+      "speed": 100,
+      "white": 0
+    }
+  },
+  {
+    "name": "Union Jack Scroll Sparkle",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": -1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+
+    {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 15,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 0
+    }
+  },
+{
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 0,
+      "Red": 255,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 255,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Aurora Effect",
+    "params": {
+      "duration": 5,
+      "fade": 0.9,
+      "scale": 0.04,
+      "speed": 1
+    }
+  },
+  {
+    "name": "Blood Pulse",
+    "params": {
+      "bpm": 69,
+      "duration": 1,
+      "max_blob_len": 15,
+      "min_blob_len": 5,
+      "pulse_depth": 0.5,
+      "speed": 20
+    }
+  },
+  {
+    "name": "Color Bounce",
+    "params": {
+      "bar_size": 5,
+      "change_color_on_bounce": 1,
+      "duration": 5,
+      "independent": 0,
+      "num_bouncers": 5
+    }
+  },
+  {
+    "name": "Color Wave Brightness",
+    "params": {
+      "duration": 5,
+      "wave_frequency": 2,
+      "wave_speed": 0.2
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Dual Sparkle Effect",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkles_per_frame": 5
+    }
+  },
+  {
+    "name": "Fire Effect",
+    "params": {
+      "cooling": 55,
+      "duration": 5,
+      "sparking": 120
+    }
+  },
+  {
+    "name": "Fireflies",
+    "params": {
+      "duration": 5,
+      "max_fireflies": 20
+    }
+  },
+  {
+    "name": "Flash",
+    "params": {
+      "delay": 0.51,
+      "flashes": 1
+    }
+  },
+  {
+    "name": "Matrix",
+    "params": {
+      "duration": 5
+    }
+  },
+  {
+    "name": "Mirror Bounce",
+    "params": {
+      "blue": 0,
+      "duration": 5,
+      "green": 0,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Morse Band Scroll",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Rainbow With Sparkles",
+    "params": {
+      "duration": 1,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Sinister Pulse",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Starfield Effect",
+    "params": {
+      "blue": 255,
+      "direction": 1,
+      "duration": 5,
+      "fade": 0.9,
+      "green": 255,
+      "red": 255,
+      "spawn_rate": 10,
+      "speed": 100,
+      "white": 0
+    }
+  },
+  {
+    "name": "Union Jack Scroll Sparkle",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": -1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+
+    {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 15,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 0
+    }
+  },
+{
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 0,
+      "Red": 255,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 255,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Aurora Effect",
+    "params": {
+      "duration": 5,
+      "fade": 0.9,
+      "scale": 0.04,
+      "speed": 1
+    }
+  },
+  {
+    "name": "Blood Pulse",
+    "params": {
+      "bpm": 69,
+      "duration": 1,
+      "max_blob_len": 15,
+      "min_blob_len": 5,
+      "pulse_depth": 0.5,
+      "speed": 20
+    }
+  },
+  {
+    "name": "Color Bounce",
+    "params": {
+      "bar_size": 5,
+      "change_color_on_bounce": 1,
+      "duration": 5,
+      "independent": 0,
+      "num_bouncers": 5
+    }
+  },
+  {
+    "name": "Color Wave Brightness",
+    "params": {
+      "duration": 5,
+      "wave_frequency": 2,
+      "wave_speed": 0.2
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Dual Sparkle Effect",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkles_per_frame": 5
+    }
+  },
+  {
+    "name": "Fire Effect",
+    "params": {
+      "cooling": 55,
+      "duration": 5,
+      "sparking": 120
+    }
+  },
+  {
+    "name": "Fireflies",
+    "params": {
+      "duration": 5,
+      "max_fireflies": 20
+    }
+  },
+  {
+    "name": "Flash",
+    "params": {
+      "delay": 0.51,
+      "flashes": 1
+    }
+  },
+  {
+    "name": "Matrix",
+    "params": {
+      "duration": 5
+    }
+  },
+  {
+    "name": "Mirror Bounce",
+    "params": {
+      "blue": 0,
+      "duration": 5,
+      "green": 0,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Morse Band Scroll",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Rainbow With Sparkles",
+    "params": {
+      "duration": 1,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Sinister Pulse",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Starfield Effect",
+    "params": {
+      "blue": 255,
+      "direction": 1,
+      "duration": 5,
+      "fade": 0.9,
+      "green": 255,
+      "red": 255,
+      "spawn_rate": 10,
+      "speed": 100,
+      "white": 0
+    }
+  },
+  {
+    "name": "Union Jack Scroll Sparkle",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": -1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+
+    {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 3,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 15,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 0
+    }
+  },
+{
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 0,
+      "Red": 255,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 0,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Theater Chase",
+    "params": {
+      "Blue": 255,
+      "Green": 255,
+      "Red": 0,
+      "duration": 3,
+      "spacing": 3
+    }
+  },
+  {
+    "name": "Aurora Effect",
+    "params": {
+      "duration": 5,
+      "fade": 0.9,
+      "scale": 0.04,
+      "speed": 1
+    }
+  },
+  {
+    "name": "Blood Pulse",
+    "params": {
+      "bpm": 69,
+      "duration": 1,
+      "max_blob_len": 15,
+      "min_blob_len": 5,
+      "pulse_depth": 0.5,
+      "speed": 20
+    }
+  },
+  {
+    "name": "Color Bounce",
+    "params": {
+      "bar_size": 5,
+      "change_color_on_bounce": 1,
+      "duration": 5,
+      "independent": 0,
+      "num_bouncers": 5
+    }
+  },
+  {
+    "name": "Color Wave Brightness",
+    "params": {
+      "duration": 5,
+      "wave_frequency": 2,
+      "wave_speed": 0.2
+    }
+  },
+  {
+    "name": "Comet Effect",
+    "params": {
+      "blue": 20,
+      "direction": 1,
+      "duration": 5,
+      "fade_factor": 0.8,
+      "green": 20,
+      "min_spacing": 30,
+      "num_comets": 5,
+      "red": 255,
+      "speed": 100,
+      "tail_length": 80,
+      "white": 255
+    }
+  },
+  {
+    "name": "Dual Sparkle Effect",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkles_per_frame": 5
+    }
+  },
+  {
+    "name": "Fire Effect",
+    "params": {
+      "cooling": 55,
+      "duration": 5,
+      "sparking": 120
+    }
+  },
+  {
+    "name": "Fireflies",
+    "params": {
+      "duration": 5,
+      "max_fireflies": 20
+    }
+  },
+  {
+    "name": "Flash",
+    "params": {
+      "delay": 0.51,
+      "flashes": 1
+    }
+  },
+  {
+    "name": "Matrix",
+    "params": {
+      "duration": 5
+    }
+  },
+  {
+    "name": "Mirror Bounce",
+    "params": {
+      "blue": 0,
+      "duration": 5,
+      "green": 0,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Morse Band Scroll",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Rainbow With Sparkles",
+    "params": {
+      "duration": 1,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
+    "name": "Sinister Pulse",
+    "params": {
+      "duration": 1
+    }
+  },
+  {
+    "name": "Starfield Effect",
+    "params": {
+      "blue": 255,
+      "direction": 1,
+      "duration": 5,
+      "fade": 0.9,
+      "green": 255,
+      "red": 255,
+      "spawn_rate": 10,
+      "speed": 100,
+      "white": 0
+    }
+  },
+  {
+    "name": "Union Jack Scroll Sparkle",
+    "params": {
+      "duration": 1,
+      "fade_steps": 8,
+      "sparkle_chance": 0.05
+    }
+  },
+  {
     "name": "0 Blackout",
     "params": {}
   }
