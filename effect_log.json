@@ -1,38 +1,26 @@
 [
   {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 5,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
+    "name": "0 Blackout",
+    "params": {}
   },
   {
-    "name": "Blood Pulse",
-    "params": {
-      "bpm": 69,
-      "duration": 1,
-      "max_blob_len": 15,
-      "min_blob_len": 5,
-      "pulse_depth": 0.5,
-      "speed": 20
-    }
+    "name": "0 Blackout",
+    "params": {}
   },
   {
-    "name": "Color Bounce",
+    "name": "0 Blackout",
+    "params": {}
+  },
+  {
+    "name": "CE3K Signal",
     "params": {
-      "bar_size": 5,
-      "change_color_on_bounce": 1,
-      "duration": 5,
-      "independent": 0,
-      "num_bouncers": 5
+      "note_delay": 0.8
     }
   },
   {
     "name": "Color Wave Brightness",
     "params": {
-      "duration": 5,
+      "duration": 30,
       "wave_frequency": 2,
       "wave_speed": 0.2
     }
@@ -42,7 +30,7 @@
     "params": {
       "blue": 20,
       "direction": 1,
-      "duration": 5,
+      "duration": 30,
       "fade_factor": 0.8,
       "green": 20,
       "min_spacing": 30,
@@ -54,1454 +42,194 @@
     }
   },
   {
-    "name": "Dual Sparkle Effect",
-    "params": {
-      "duration": 1,
-      "fade_steps": 8,
-      "sparkles_per_frame": 5
-    }
-  },
-  {
-    "name": "Fire Effect",
-    "params": {
-      "cooling": 55,
-      "duration": 5,
-      "sparking": 120
-    }
-  },
-  {
-    "name": "Fireflies",
-    "params": {
-      "duration": 5,
-      "max_fireflies": 20
-    }
-  },
-  {
-    "name": "Flash",
-    "params": {
-      "delay": 0.51,
-      "flashes": 1
-    }
-  },
-  {
-    "name": "Matrix",
-    "params": {
-      "duration": 5
-    }
-  },
-  {
-    "name": "Mirror Bounce",
-    "params": {
-      "blue": 0,
-      "duration": 5,
-      "green": 0,
-      "red": 255,
-      "white": 0
-    }
-  },
-  {
-    "name": "Morse Band Scroll",
-    "params": {
-      "duration": 1
-    }
-  },
-  {
-    "name": "Rainbow With Sparkles",
-    "params": {
-      "duration": 1,
-      "sparkle_chance": 0.05
-    }
-  },
-  {
-    "name": "Sinister Pulse",
-    "params": {
-      "duration": 1
-    }
-  },
-  {
-    "name": "Starfield Effect",
+    "name": "Neural Pulse",
     "params": {
       "blue": 255,
-      "direction": 1,
-      "duration": 5,
-      "fade": 0.9,
+      "direction": 0,
+      "duration": 30,
       "green": 255,
-      "red": 255,
-      "spawn_rate": 10,
-      "speed": 100,
-      "white": 0
-    }
-  },
-  {
-    "name": "Theater Chase",
-    "params": {
-      "Blue": 0,
-      "Green": 0,
-      "Red": 255,
-      "duration": 1,
-      "spacing": 3
-    }
-  },
-  {
-    "name": "Union Jack Scroll Sparkle",
-    "params": {
-      "duration": 1,
-      "fade_steps": 8,
-      "sparkle_chance": 0.05
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "Blood Pulse",
-    "params": {
-      "bpm": 237,
-      "duration": 20,
-      "max_blob_len": 15,
-      "min_blob_len": 8,
-      "pulse_depth": 0.8,
-      "speed": 20
-    }
-  },
-  {
-    "name": "Color Bounce",
-    "params": {
-      "bar_size": 5,
-      "change_color_on_bounce": 1,
-      "duration": 14,
-      "independent": 1,
-      "num_bouncers": 10
-    }
-  },
-  {
-    "name": "Color Wave Brightness",
-    "params": {
-      "duration": 15,
-      "wave_frequency": 7.4,
-      "wave_speed": 0.87
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": 1,
-      "duration": 20,
-      "fade_factor": 0.8,
-      "green": 20,
-      "min_spacing": 30,
-      "num_comets": 5,
-      "red": 255,
-      "speed": 100,
-      "tail_length": 80,
-      "white": 255
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": -1,
-      "duration": 16,
-      "fade_factor": 0.71,
-      "green": 140,
-      "min_spacing": 83,
-      "num_comets": 8,
-      "red": 171,
-      "speed": 100,
-      "tail_length": 49,
-      "white": 0
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": -1,
-      "duration": 16,
-      "fade_factor": 0.71,
-      "green": 140,
-      "min_spacing": 83,
-      "num_comets": 8,
-      "red": 171,
-      "speed": 100,
-      "tail_length": 49,
-      "white": 0
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": -1,
-      "duration": 16,
-      "fade_factor": 0.71,
-      "green": 140,
-      "min_spacing": 83,
-      "num_comets": 8,
-      "red": 171,
-      "speed": 100,
-      "tail_length": 49,
-      "white": 0
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Dual Sparkle Effect",
-    "params": {
-      "duration": 10,
-      "fade_steps": 8,
-      "sparkles_per_frame": 5
-    }
-  },
-  {
-    "name": "Fire Effect",
-    "params": {
-      "cooling": 27,
-      "duration": 10,
-      "sparking": 120
-    }
-  },
-  {
-    "name": "Fireflies",
-    "params": {
-      "duration": 15,
-      "max_fireflies": 35
-    }
-  },
-  {
-    "name": "Flash",
-    "params": {
-      "delay": 0.51,
-      "flashes": 11
-    }
-  },
-  {
-    "name": "Matrix",
-    "params": {
-      "duration": 19
-    }
-  },
-  {
-    "name": "Mirror Bounce",
-    "params": {
-      "blue": 0,
-      "duration": 32,
-      "green": 0,
-      "red": 255,
-      "white": 0
-    }
-  },
-  {
-    "name": "Morse Band Scroll",
-    "params": {
-      "duration": 16
-    }
-  },
-  {
-    "name": "Rainbow With Sparkles",
-    "params": {
-      "duration": 45,
-      "sparkle_chance": 0.03
-    }
-  },
-  {
-    "name": "Sinister Pulse",
-    "params": {
-      "duration": 23
-    }
-  },
-  {
-    "name": "Starfield Effect",
-    "params": {
-      "blue": 11,
-      "direction": 1,
-      "duration": 20,
-      "fade": 0.94,
-      "green": 0,
-      "red": 212,
-      "spawn_rate": 10,
-      "speed": 230,
-      "white": 255
-    }
-  },
-  {
-    "name": "Starfield Effect",
-    "params": {
-      "blue": 11,
-      "direction": 1,
-      "duration": 20,
-      "fade": 0.98,
-      "green": 0,
       "red": 0,
-      "spawn_rate": 47,
-      "speed": 110,
-      "white": 255
-    }
-  },
-  {
-    "name": "Theater Chase",
-    "params": {
-      "Blue": 0,
-      "Green": 0,
-      "Red": 255,
-      "duration": 10,
-      "spacing": 3
-    }
-  },
-  {
-    "name": "Theater Chase",
-    "params": {
-      "Blue": 255,
-      "Green": 0,
-      "Red": 255,
-      "duration": 10,
-      "spacing": 3
-    }
-  },
-  {
-    "name": "Timer",
-    "params": {
-      "duration": 1,
-      "reverse": 0
-    }
-  },
-  {
-    "name": "Union Jack Scroll Sparkle",
-    "params": {
-      "duration": 10,
-      "fade_steps": 1,
-      "sparkle_chance": 0.03
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "Blood Pulse",
-    "params": {
-      "bpm": 60,
-      "duration": 20,
-      "max_blob_len": 15,
-      "min_blob_len": 5,
-      "pulse_depth": 0.5,
-      "speed": 20
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Color Bounce",
-    "params": {
-      "bar_size": 5,
-      "change_color_on_bounce": 1,
-      "duration": 15,
-      "independent": 0,
-      "num_bouncers": 5
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Color Bounce",
-    "params": {
-      "bar_size": 5,
-      "change_color_on_bounce": 1,
-      "duration": 15,
-      "independent": 0,
-      "num_bouncers": 5
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 0.8
-    }
-  },
-  {
-    "name": "Color Wave Brightness",
-    "params": {
-      "duration": 9,
-      "wave_frequency": 2,
-      "wave_speed": 0.2
-    }
-  },
-  {
-    "name": "Color Wave Brightness",
-    "params": {
-      "duration": 9,
-      "wave_frequency": 6.6,
-      "wave_speed": 0.2
-    }
-  },
-  {
-    "name": "Color Wave Brightness",
-    "params": {
-      "duration": 9,
-      "wave_frequency": 6.6,
-      "wave_speed": 0.76
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": 1,
-      "duration": 20,
-      "fade_factor": 0.8,
-      "green": 20,
-      "min_spacing": 91,
-      "num_comets": 9,
-      "red": 223,
-      "speed": 100,
-      "tail_length": 80,
-      "white": 213
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": 1,
-      "duration": 20,
-      "fade_factor": 0.8,
-      "green": 20,
-      "min_spacing": 91,
-      "num_comets": 9,
-      "red": 223,
-      "speed": 100,
-      "tail_length": 80,
-      "white": 213
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": 1,
-      "duration": 20,
-      "fade_factor": 0.8,
-      "green": 20,
-      "min_spacing": 91,
-      "num_comets": 9,
-      "red": 223,
-      "speed": 100,
-      "tail_length": 80,
-      "white": 213
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": 1,
-      "duration": 20,
-      "fade_factor": 0.8,
-      "green": 20,
-      "min_spacing": 91,
-      "num_comets": 9,
-      "red": 223,
-      "speed": 100,
-      "tail_length": 80,
-      "white": 213
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": 1,
-      "duration": 20,
-      "fade_factor": 0.8,
-      "green": 20,
-      "min_spacing": 91,
-      "num_comets": 9,
-      "red": 223,
-      "speed": 100,
-      "tail_length": 80,
-      "white": 213
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": 1,
-      "duration": 20,
-      "fade_factor": 0.8,
-      "green": 20,
-      "min_spacing": 91,
-      "num_comets": 9,
-      "red": 223,
-      "speed": 100,
-      "tail_length": 80,
-      "white": 213
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
-      "direction": 1,
-      "duration": 20,
-      "fade_factor": 0.8,
-      "green": 20,
-      "min_spacing": 91,
-      "num_comets": 9,
-      "red": 223,
-      "speed": 100,
-      "tail_length": 80,
-      "white": 213
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "0 Blackout",
-    "params": {}
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.63,
-      "speed": 1
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.63,
-      "speed": 1
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 207,
-      "direction": 1,
-      "duration": 20,
-      "fade_factor": 0.44,
-      "green": 20,
-      "min_spacing": 30,
-      "num_comets": 5,
-      "red": 255,
-      "speed": 100,
-      "tail_length": 54,
-      "white": 255
-    }
-  },
-  {
-    "name": "Dual Sparkle Effect",
-    "params": {
-      "duration": 43,
-      "fade_steps": 13,
-      "sparkles_per_frame": 5
-    }
-  },
-  {
-    "name": "Dual Sparkle Effect",
-    "params": {
-      "duration": 43,
-      "fade_steps": 13,
-      "sparkles_per_frame": 5
-    }
-  },
-  {
-    "name": "Dual Sparkle Effect",
-    "params": {
-      "duration": 43,
-      "fade_steps": 13,
-      "sparkles_per_frame": 5
-    }
-  },
-  {
-    "name": "Fireflies",
-    "params": {
-      "duration": 15,
-      "max_fireflies": 20
-    }
-  },
-  {
-    "name": "Dual Sparkle Effect",
-    "params": {
-      "duration": 43,
-      "fade_steps": 13,
-      "sparkles_per_frame": 5
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.83,
-      "scale": 0.04,
-      "speed": 0.72
-    }
-  },
-  {
-    "name": "Matrix",
-    "params": {
-      "duration": 116
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 159,
-      "direction": 1,
-      "duration": 41,
-      "fade_factor": 0.7,
-      "green": 20,
-      "min_spacing": 30,
-      "num_comets": 5,
-      "red": 255,
-      "speed": 100,
-      "tail_length": 54,
-      "white": 161
-    }
-  },
-  {
-    "name": "Color Wave Brightness",
-    "params": {
-      "duration": 15,
-      "wave_frequency": 2,
-      "wave_speed": 0.2
-    }
-  },
-  {
-    "name": "Flash",
-    "params": {
-      "delay": 0.51,
-      "flashes": 71
-    }
-  },
-  {
-    "name": "Sinister Pulse",
-    "params": {
-      "duration": 213
-    }
-  },
-  {
-    "name": "Sinister Pulse",
-    "params": {
-      "duration": 213
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.85,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "Color Bounce",
-    "params": {
-      "bar_size": 5,
-      "change_color_on_bounce": 1,
-      "duration": 15,
-      "independent": 0,
-      "num_bouncers": 5
-    }
-  },
-  {
-    "name": "Rainbow With Sparkles",
-    "params": {
-      "duration": 10,
-      "sparkle_chance": 0.05
-    }
-  },
-  {
-    "name": "Rainbow With Sparkles",
-    "params": {
-      "duration": 29,
-      "sparkle_chance": 0.05
-    }
-  },
-  {
-    "name": "Union Jack Scroll Sparkle",
-    "params": {
-      "duration": 10,
-      "fade_steps": 14,
-      "sparkle_chance": 0.05
-    }
-  },
-  {
-    "name": "Color Wave Brightness",
-    "params": {
-      "duration": 15,
-      "wave_frequency": 6.9,
-      "wave_speed": 0.2
-    }
-  },
-  {
-    "name": "Theater Chase",
-    "params": {
-      "Blue": 169,
-      "Green": 0,
-      "Red": 255,
-      "duration": 28,
-      "spacing": 7
-    }
-  },
-  {
-    "name": "Starfield Effect",
-    "params": {
-      "blue": 255,
-      "direction": 0,
-      "duration": 49,
-      "fade": 0.9,
-      "green": 255,
-      "red": 204,
-      "spawn_rate": 40,
-      "speed": 230,
+      "spawn_interval": 0.5,
+      "trail_length": 20,
       "white": 0
     }
   },
   {
-    "name": "Timer",
+    "name": "Neural Pulse",
     "params": {
-      "duration": 1,
-      "reverse": 0
-    }
-  },
-  {
-    "name": "Morse Band Scroll",
-    "params": {
-      "duration": 10
-    }
-  },
-  {
-    "name": "Morse Band Scroll",
-    "params": {
-      "duration": 30
-    }
-  },
-  {
-    "name": "Mirror Bounce",
-    "params": {
-      "blue": 153,
-      "duration": 15,
-      "green": 0,
-      "red": 153,
-      "white": 240
-    }
-  },
-  {
-    "name": "Flash",
-    "params": {
-      "delay": 0.51,
-      "flashes": 1
-    }
-  },
-  {
-    "name": "Fireflies",
-    "params": {
-      "duration": 46,
-      "max_fireflies": 45
-    }
-  },
-  {
-    "name": "CE3K Signal",
-    "params": {
-      "note_delay": 1.6
-    }
-  },
-  {
-    "name": "Blood Pulse",
-    "params": {
-      "bpm": 60,
-      "duration": 516,
-      "max_blob_len": 15,
-      "min_blob_len": 5,
-      "pulse_depth": 0.7,
-      "speed": 20
-    }
-  },
-  {
-    "name": "Comet Effect",
-    "params": {
-      "blue": 20,
+      "blue": 255,
       "direction": 0,
-      "duration": 51,
-      "fade_factor": 0.8,
-      "green": 20,
-      "min_spacing": 30,
-      "num_comets": 10,
-      "red": 255,
-      "speed": 99,
-      "tail_length": 78,
-      "white": 227
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 52,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
-      "duration": 20,
-      "fade": 0.92,
-      "scale": 0.04,
-      "speed": 1
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
       "duration": 60,
-      "fade": 0.92,
-      "scale": 0.96,
-      "speed": 1
+      "green": 255,
+      "red": 0,
+      "spawn_interval": 0.5,
+      "trail_length": 20,
+      "white": 0
     }
   },
   {
-    "name": "Blood Pulse",
+    "name": "Neural Pulse",
     "params": {
-      "bpm": 60,
-      "duration": 20,
-      "max_blob_len": 15,
-      "min_blob_len": 5,
-      "pulse_depth": 0.5,
-      "speed": 20
+      "blue": 255,
+      "direction": 0,
+      "duration": 30,
+      "green": 255,
+      "red": 0,
+      "spawn_interval": 0.1,
+      "trail_length": 20,
+      "white": 0
     }
   },
   {
-    "name": "Blood Pulse",
+    "name": "Wormhole",
     "params": {
-      "bpm": 60,
-      "duration": 314,
-      "max_blob_len": 15,
-      "min_blob_len": 7,
-      "pulse_depth": 0.9,
-      "speed": 55
+      "base_saturation": 1,
+      "base_value": 1,
+      "duration": 60,
+      "hue_speed": 0.02,
+      "wave_density": 0.1
     }
   },
   {
-    "name": "Color Wave Brightness",
+    "name": "Neural Pulse",
     "params": {
-      "duration": 42,
-      "wave_frequency": 5,
-      "wave_speed": 0.2
+      "blue": 255,
+      "direction": 0,
+      "duration": 60,
+      "green": 255,
+      "red": 0,
+      "spawn_interval": 0.5,
+      "trail_length": 20,
+      "white": 0
     }
   },
   {
-    "name": "Rainbow With Sparkles",
-    "params": {
-      "duration": 43,
-      "sparkle_chance": 0.05
-    }
+    "name": "0 Blackout",
+    "params": {}
   },
   {
     "name": "Dual Sparkle Effect",
     "params": {
-      "duration": 39,
+      "duration": 33,
       "fade_steps": 8,
-      "sparkles_per_frame": 5
+      "sparkles_per_frame": 9
     }
   },
   {
-    "name": "Sinister Pulse",
+    "name": "Neural Pulse",
     "params": {
-      "duration": 351
-    }
-  },
-  {
-    "name": "Blood Pulse",
-    "params": {
-      "bpm": 178,
-      "duration": 44,
-      "max_blob_len": 22,
-      "min_blob_len": 5,
-      "pulse_depth": 0.6,
-      "speed": 20
-    }
-  },
-  {
-    "name": "Fireflies",
-    "params": {
-      "duration": 15,
-      "max_fireflies": 20
-    }
-  },
-  {
-    "name": "Aurora Effect",
-    "params": {
+      "blue": 255,
+      "direction": 0,
       "duration": 60,
-      "fade": 0.63,
-      "scale": 0.04,
-      "speed": 0.52
+      "green": 255,
+      "red": 0,
+      "spawn_interval": 0.5,
+      "speed": 300,
+      "trail_length": 20,
+      "white": 0
     }
   },
   {
-    "name": "Mirror Bounce",
+    "name": "Neural Pulse",
     "params": {
-      "blue": 199,
-      "duration": 15,
-      "green": 0,
-      "red": 205,
+      "blue": 255,
+      "direction": 0,
+      "duration": 60,
+      "green": 255,
+      "red": 0,
+      "spawn_interval": 0.5,
+      "speed": 300,
+      "trail_length": 20,
+      "white": 0
+    }
+  },
+  {
+    "name": "Ghost Fade",
+    "params": {
+      "blue": 255,
+      "duration": 60,
+      "fade_time": 2,
+      "ghost_size": 10,
+      "green": 255,
+      "red": 255,
+      "spawn_rate": 0.3,
+      "white": 0
+    }
+  },
+  {
+    "name": "Ghost Fade",
+    "params": {
+      "blue": 255,
+      "duration": 60,
+      "fade_time": 2,
+      "ghost_size": 17,
+      "green": 108,
+      "red": 255,
+      "spawn_rate": 0.3,
       "white": 255
     }
   },
   {
+    "name": "Slot Machine Roll",
+    "params": {
+      "blue": 255,
+      "deceleration": 100,
+      "duration": 10,
+      "green": 255,
+      "initial_speed": 500,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Slot Machine Roll",
+    "params": {
+      "blue": 255,
+      "deceleration": 100,
+      "duration": 55,
+      "green": 255,
+      "initial_speed": 500,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Slot Machine Roll",
+    "params": {
+      "blue": 255,
+      "deceleration": 100,
+      "duration": 47,
+      "green": 255,
+      "initial_speed": 500,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Slot Machine Roll",
+    "params": {
+      "blue": 255,
+      "deceleration": 100,
+      "duration": 30,
+      "green": 255,
+      "initial_speed": 500,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
+    "name": "Slot Machine Roll",
+    "params": {
+      "blue": 255,
+      "deceleration": 100,
+      "duration": 30,
+      "green": 255,
+      "initial_speed": 500,
+      "red": 255,
+      "white": 0
+    }
+  },
+  {
     "name": "0 Blackout",
     "params": {}
   },
@@ -1510,32 +238,109 @@
     "params": {}
   },
   {
-    "name": "Dual Sparkle Effect",
+    "name": "Slot Machine Roll",
     "params": {
-      "duration": 24,
-      "fade_steps": 8,
-      "sparkles_per_frame": 5
+      "blue": 255,
+      "deceleration": 100,
+      "duration": 30,
+      "green": 255,
+      "initial_speed": 500,
+      "red": 255,
+      "white": 0
     }
   },
   {
-    "name": "Fireflies",
+    "name": "Slot Machine Roll",
     "params": {
-      "duration": 20,
-      "max_fireflies": 50
+      "blue": 255,
+      "duration": 45,
+      "green": 255,
+      "max_speed": 500,
+      "min_speed": 100,
+      "red": 255,
+      "white": 0
     }
   },
   {
-    "name": "Aurora Effect",
+    "name": "Star Snake",
     "params": {
-      "duration": 20,
-      "fade": 0.9,
-      "scale": 0.04,
-      "speed": 1
+      "blue": 255,
+      "direction_change_interval": 3,
+      "duration": 48,
+      "green": 255,
+      "red": 255,
+      "speed": 60,
+      "tail_length": 30,
+      "white": 0
     }
   },
   {
-    "name": "0 Blackout",
-    "params": {}
+    "name": "Star Snake",
+    "params": {
+      "blue": 255,
+      "direction_change_interval": 6.4,
+      "duration": 48,
+      "green": 0,
+      "red": 255,
+      "speed": 110,
+      "tail_length": 30,
+      "white": 0
+    }
+  },
+  {
+    "name": "Star Snake",
+    "params": {
+      "blue": 255,
+      "direction_change_interval": 6.4,
+      "duration": 48,
+      "green": 255,
+      "red": 0,
+      "speed": 110,
+      "tail_length": 30,
+      "white": 253
+    }
+  },
+  {
+    "name": "Star Snake",
+    "params": {
+      "blue": 255,
+      "duration": 54,
+      "green": 255,
+      "max_interval": 5,
+      "min_interval": 2,
+      "red": 255,
+      "speed": 60,
+      "tail_length": 30,
+      "white": 255
+    }
+  },
+  {
+    "name": "Star Snake",
+    "params": {
+      "blue": 255,
+      "duration": 54,
+      "green": 255,
+      "max_interval": 5,
+      "min_interval": 2,
+      "red": 255,
+      "speed": 30,
+      "tail_length": 30,
+      "white": 255
+    }
+  },
+  {
+    "name": "Star Snake",
+    "params": {
+      "blue": 255,
+      "duration": 54,
+      "green": 255,
+      "max_interval": 8,
+      "min_interval": 5,
+      "red": 255,
+      "speed": 30,
+      "tail_length": 30,
+      "white": 255
+    }
   },
   {
     "name": "0 Blackout",

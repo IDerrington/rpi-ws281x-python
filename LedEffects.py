@@ -1598,8 +1598,326 @@ def color_bounce(strip1, strip2, duration=15, num_bouncers=3, fps=60,
             time.sleep(sleep)
 
 
+def wormhole_vortex(strip1, strip2, duration=15, fps=60, 
+                    direction='inward', wave_density=0.1, 
+                    hue_speed=0.02, base_saturation=1.0, base_value=1.0):
+    """
+    Wormhole vortex visual effect with flowing bands and rotating color.
+
+    :param strip1: First NeoPixel strip
+    :param strip2: Second NeoPixel strip
+    :param duration: Duration in seconds
+    :param fps: Frames per second
+    :param direction: 'inward' or 'outward'
+    :param wave_density: Number of wave peaks per strip length (higher = tighter waves)
+    :param hue_speed: Rate of hue rotation per frame
+    :param base_saturation: HSV saturation (0-1)
+    :param base_value: HSV brightness (0-1)
+    """
+    import colorsys
+
+    num_pixels = min(strip1.numPixels(), strip2.numPixels())
+    frame_delay = 1.0 / fps
+    start_time = time.time()
+    hue_offset = 0.0
+
+    def get_brightness(i, t):
+        """Return wave brightness at position i and time t."""
+        phase = 2 * math.pi * (wave_density * i / num_pixels + t)
+        return (math.sin(phase) + 1) / 2  # [0,1]
+
+    while time.time() - start_time < duration:
+        frame_start = time.perf_counter()
+        t = (time.time() - start_time)
+
+        for i in range(num_pixels):
+            index = i if direction == 'outward' else num_pixels - 1 - i
+            brightness = get_brightness(index, t)
+
+            # Rotate hue over time
+            hue = (hue_offset + i / num_pixels) % 1.0
+            r, g, b = colorsys.hsv_to_rgb(hue, base_saturation, base_value * brightness)
+            color = Color(int(r * 255), int(g * 255), int(b * 255), 0)
+
+            strip1.setPixelColor(i, color)
+            strip2.setPixelColor(i, color)
+
+        strip1.show()
+        strip2.show()
+
+        hue_offset = (hue_offset + hue_speed) % 1.0
+
+        elapsed = time.perf_counter() - frame_start
+        sleep_time = frame_delay - elapsed
+        if sleep_time > 0:
+            time.sleep(sleep_time)
 
 
+def neural_pulse(strip1, strip2,
+                 duration=10,
+                 fps=60,
+                 pulse_color=(0, 255, 255, 0),
+                 trail_length=20,
+                 spawn_interval=0.5,
+                 speed=300,
+                 direction="inward"):
+    """
+    Simulates neural pulses moving inward or outward with trailing fade.
+
+    :param strip1: First NeoPixel strip
+    :param strip2: Second NeoPixel strip
+    :param duration: Total duration in seconds
+    :param fps: Frames per second
+    :param pulse_color: RGBW color of the pulse
+    :param trail_length: Length of fading trail
+    :param spawn_interval: Seconds between pulses
+    :param speed: Pixels per second
+    :param direction: 'inward' or 'outward'
+    """
+
+    num_pixels = min(strip1.numPixels(), strip2.numPixels())
+    frame_delay = 1.0 / fps
+    last_spawn = 0
+    pulses = []  # list of {'head': float}
+
+    def clear(strip):
+        for i in range(num_pixels):
+            strip.setPixelColor(i, Color(0, 0, 0, 0))
+
+    def draw_pulses(strip, pulses):
+        for pulse in pulses:
+            head = pulse['head']
+            for i in range(trail_length):
+                pos = int(head - i if direction == 'inward' else head + i)
+                if 0 <= pos < num_pixels:
+                    fade = max(0.0, 1.0 - (i / trail_length))
+                    color = tuple(int(c * fade) for c in pulse_color)
+                    strip.setPixelColor(pos, Color(*color))
+
+    start_time = time.time()
+    while time.time() - start_time < duration:
+        frame_start = time.time()
+
+        clear(strip1)
+        clear(strip2)
+
+        # Update pulse positions
+        delta = speed / fps
+        for pulse in pulses:
+            if direction == 'inward':
+                pulse['head'] += delta
+            else:
+                pulse['head'] -= delta
+
+        # Remove finished pulses
+        pulses = [
+            p for p in pulses
+            if -trail_length < p['head'] < num_pixels + trail_length
+        ]
+
+        # Spawn new pulse pair
+        if time.time() - last_spawn >= spawn_interval:
+            if direction == 'inward':
+                pulses.append({'head': 0.0})
+                pulses.append({'head': num_pixels - 1.0})
+            else:
+                center = (num_pixels - 1) / 2
+                pulses.append({'head': center})
+                pulses.append({'head': center})
+            last_spawn = time.time()
+
+        draw_pulses(strip1, pulses)
+        draw_pulses(strip2, pulses)
+
+        strip1.show()
+        strip2.show()
+
+        elapsed = time.time() - frame_start
+        sleep_time = max(0.0, frame_delay - elapsed)
+        time.sleep(sleep_time)
+
+
+def ghost_fade(strip1, strip2,
+               duration=20,
+               fps=30,
+               spawn_rate=0.3,  # ghosts/sec
+               ghost_size=10,   # pixels
+               fade_time=2.0,   # seconds to fade out
+               color=(255, 255, 255, 0)):
+
+    num_pixels = min(strip1.numPixels(), strip2.numPixels())
+    frame_delay = 1.0 / fps
+    ghosts = []
+
+    def clear_buffer(strip):
+        for i in range(num_pixels):
+            strip.setPixelColor(i, Color(0, 0, 0, 0))
+
+    class Ghost:
+        def __init__(self, position):
+            self.position = position
+            self.age = 0.0
+            self.fade_rate = 1.0 / fade_time
+            self.size = ghost_size
+
+        def brightness(self):
+            return max(0.0, 1.0 - self.age * self.fade_rate)
+
+        def draw(self, strip):
+            for i in range(-self.size // 2, self.size // 2 + 1):
+                pos = int(self.position + i)
+                if 0 <= pos < num_pixels:
+                    fade = self.brightness() * max(0.0, 1.0 - abs(i) / self.size)
+                    c = tuple(int(c * fade) for c in color)
+                    strip.setPixelColor(pos, Color(*c))
+
+        def update(self, dt):
+            self.age += dt
+            self.position += random.uniform(-0.2, 0.2)  # small drift
+
+        def is_alive(self):
+            return self.age < fade_time
+
+    start = time.time()
+    last_spawn = 0.0
+
+    while time.time() - start < duration:
+        now = time.time()
+        elapsed = now - start
+        dt = frame_delay
+
+        # Spawn new ghost
+        if now - last_spawn >= 1.0 / spawn_rate:
+            spawn_pos = random.uniform(0, num_pixels)
+            ghosts.append(Ghost(spawn_pos))
+            last_spawn = now
+
+        # Update ghosts
+        for g in ghosts:
+            g.update(dt)
+        ghosts = [g for g in ghosts if g.is_alive()]
+
+        # Draw frame
+        clear_buffer(strip1)
+        clear_buffer(strip2)
+        for g in ghosts:
+            g.draw(strip1)
+            g.draw(strip2)
+
+        strip1.show()
+        strip2.show()
+
+        time.sleep(max(0.0, frame_delay - (time.time() - now)))
+
+def slot_machine_roll(strip1, strip2,
+                      duration=30,
+                      max_speed=500,       # pixels per second
+                      min_speed=20,        # final speed
+                      snap=True,
+                      palette=[(255, 0, 0, 0), (0, 255, 0, 0), (0, 0, 255, 0), (255, 255, 0, 0)],
+                      final_color=(255, 255, 255, 0),
+                      fps=60):
+    num_pixels = min(strip1.numPixels(), strip2.numPixels())
+    frame_delay = 1.0 / fps
+    start_time = time.time()
+    prev_time = start_time
+    elapsed = 0
+    offset = 0.0
+
+    def get_color_at(i, offset):
+        index = int((i + offset) / 10) % len(palette)
+        return palette[index]
+
+    while elapsed < duration:
+        now = time.time()
+        dt = now - prev_time
+        prev_time = now
+        elapsed = now - start_time
+        t = min(elapsed / duration, 1.0)
+
+        # Interpolated speed with easing
+        speed = max_speed * (1 - t)**2 + min_speed
+        offset += speed * dt
+
+        if snap:
+            offset = int(offset)
+
+        for i in range(num_pixels):
+            color = get_color_at(i, offset)
+            strip1.setPixelColor(i, Color(*color))
+            strip2.setPixelColor(i, Color(*color))
+
+        strip1.show()
+        strip2.show()
+
+        time.sleep(max(0, frame_delay - (time.time() - now)))  # sleep only the remaining time
+
+    # Final locked-in color
+    for i in range(num_pixels):
+        strip1.setPixelColor(i, Color(*final_color))
+        strip2.setPixelColor(i, Color(*final_color))
+    strip1.show()
+    strip2.show()
+
+
+def star_snake(strip1, strip2,
+               duration=30,
+               tail_length=30,
+               speed=60,
+               min_interval=2.0,
+               max_interval=5.0,
+               color=(255, 255, 255, 0),
+               fps=60):
+    import time, random
+    from rpi_ws281x import Color
+
+    num_pixels = min(strip1.numPixels(), strip2.numPixels())
+    frame_delay = 1.0 / fps
+    position = 0.0
+    direction = 1
+
+    def draw_snake(pos, color):
+        for i in range(num_pixels):
+            dist = abs(i - int(pos))
+            brightness = max(0, 1 - dist / tail_length)
+            c = tuple(int(channel * brightness) for channel in color)
+            strip1.setPixelColor(i, Color(*c))
+            strip2.setPixelColor(i, Color(*c))
+
+    last_change_time = time.time()
+    next_change_interval = random.uniform(min_interval, max_interval)
+    start_time = time.time()
+    prev_time = start_time
+
+    while time.time() - start_time < duration:
+        now = time.time()
+        dt = now - prev_time
+        prev_time = now
+
+        # Direction change + color update
+        if now - last_change_time >= next_change_interval:
+            direction *= -1
+            last_change_time = now
+            next_change_interval = random.uniform(min_interval, max_interval)
+
+            # New random color
+            color = (
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 50)
+            )
+
+        # Move the snake
+        position += direction * speed * dt
+        position = max(0, min(position, num_pixels - 1))
+
+        # Draw and show
+        draw_snake(position, color)
+        strip1.show()
+        strip2.show()
+
+        time.sleep(max(0, frame_delay - (time.time() - now)))
 
 def blackout(strip):
     for i in range(max(strip.numPixels(), strip.numPixels())):
